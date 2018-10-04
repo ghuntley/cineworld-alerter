@@ -8,5 +8,17 @@
                          DataContext="{Binding Startup, Source={StaticResource Locator}}"
                          mc:Ignorable="d">
 
-    <Grid />
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Before we begin, let's set your local Cineworld" />
+            <ComboBox DisplayMemberPath="DisplayName"
+                      ItemsSource="{x:Bind ViewModel.Cinemas}"
+                      SelectedItem="{x:Bind ViewModel.SelectedCinema, Mode=TwoWay}" />
+
+            <Button Click="{x:Bind ViewModel.SetCinema}"
+                    Content="Let's go..."
+                    IsEnabled="{x:Bind ViewModel.CanMoveOn, Mode=OneWay}" />
+        </StackPanel>
+    </Grid>
 </local:CineworldViewBase>

@@ -11,6 +11,7 @@ namespace CineworldAlerter.Core
         {
             container.RegisterType<IApiClient, ApiClient>();
             container.RegisterType(typeof(ICachingService<>), typeof(CachingService<>));
+            container.RegisterType(typeof(ICachingService<,>), typeof(CachingService<,>));
             container.RegisterType<ICinemaService, CinemaService>(new ContainerControlledLifetimeManager());
         }
     }

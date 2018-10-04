@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using Cimbalino.Toolkit.Services;
 using Cineworld.Api;
 using Cineworld.Api.Model;
@@ -66,7 +65,7 @@ namespace CineworldAlerter.Core.Services
 
             var fileContents = await _storageService.Local.ReadAllTextAsync(CinemaCacheFile);
             var cinemaList = JsonConvert.DeserializeObject<List<Cinema>>(fileContents);
-            return cinemaList;
+            return cinemaList ?? new List<Cinema>();
         }
 
         private void LoadCinema()

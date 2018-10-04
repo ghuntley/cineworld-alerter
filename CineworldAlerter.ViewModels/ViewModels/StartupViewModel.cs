@@ -22,9 +22,15 @@ namespace CineworldAlerter.ViewModels
         public Cinema SelectedCinema
         {
             get => _selectedCinema;
-            set => Set(ref _selectedCinema, value);
+            set
+            {
+                if(Set(ref _selectedCinema, value))
+                    RaisePropertyChanged(nameof(CanMoveOn));
+            }
         }
-        
+
+        public bool CanMoveOn => SelectedCinema != null;
+
         public StartupViewModel(
             ICineworldNavigationService navigationService,
             ICinemaService cinemaService)
@@ -37,6 +43,8 @@ namespace CineworldAlerter.ViewModels
         {
             if (_cinemaService.CurrentCinema != null)
             {
+                await Task.Delay(10);
+
                 _navigationService.NavigateToMainPage();
                 _navigationService.ClearBackStack();
                 return;
@@ -46,6 +54,13 @@ namespace CineworldAlerter.ViewModels
 
             var cinemas = await _cinemaService.GetCurrentCinemas();
             Cinemas.AddRange(cinemas);
+        }
+
+        public void SetCinema()
+        {
+            _cinemaService.ChangeCinema(SelectedCinema);
+            _navigationService.NavigateToMainPage();
+            _navigationService.ClearBackStack();
         }
     }
 }

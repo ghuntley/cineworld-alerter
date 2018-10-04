@@ -13,4 +13,15 @@ namespace CineworldAlerter.Core.Services
 
         void ClearCache();
     }
+
+    public interface ICachingService<TKey, TValue>
+    {
+        bool IsInitialised { get; }
+
+        void Initialise(Func<TKey, Task<TValue>> retrievalFunc);
+
+        Task<TValue> Get(TKey key);
+
+        void ClearCache();
+    }
 }
