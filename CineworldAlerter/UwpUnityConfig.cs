@@ -14,6 +14,7 @@ namespace CineworldAlerter
             container.RegisterType<ICineworldNavigationService, CineworldNavigationService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IStorageService, StorageService>();
             container.RegisterType<IApplicationSettingsService, ApplicationSettingsService>();
+            container.RegisterType<IToastService, ToastService>();
         }
     }
 }
