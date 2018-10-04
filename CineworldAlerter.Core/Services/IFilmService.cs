@@ -17,8 +17,8 @@ namespace CineworldAlerter.Core.Services
 
     public class FilmService : IFilmService
     {
-        private const string FilmCacheFile = "CinemaFilmCache.json";
-        private const string AllFilmCacheFile = "AllFilmsCache.json";
+        public const string FilmCacheFile = "CinemaFilmCache.json";
+        public const string AllFilmCacheFile = "AllFilmsCache.json";
 
         private readonly IApiClient _apiClient;
         private readonly ICachingService<string, List<FullFilm>> _filmCache;
