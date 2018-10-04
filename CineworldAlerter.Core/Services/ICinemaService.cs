@@ -1,4 +1,6 @@
-﻿using Cineworld.Api.Model;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cineworld.Api.Model;
 
 namespace CineworldAlerter.Core.Services
 {
@@ -7,5 +9,7 @@ namespace CineworldAlerter.Core.Services
         Cinema CurrentCinema { get; }
 
         void ChangeCinema(Cinema cinema);
+
+        Task<List<Cinema>> GetCurrentCinemas();
     }
 }
