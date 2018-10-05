@@ -8,6 +8,7 @@ using CineworldAlerter.Background;
 using CineworldAlerter.Core;
 using CineworldAlerter.ViewModels;
 using CineworldAlerter.Views;
+using CineworldAlerter.Windows.Core;
 using Unity;
 
 namespace CineworldAlerter
@@ -76,6 +77,7 @@ namespace CineworldAlerter
         {
             var container = new UnityContainer();
             CoreUnityConfig.Configure(container);
+            UwpCoreUnityConfig.Configure(container);
             UwpUnityConfig.Configure(container);
 
             if (configureLocator)

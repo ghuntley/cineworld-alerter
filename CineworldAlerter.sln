@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37E52450
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineworldAlerter.Core.Tests", "CineworldAlerter.Core.Tests\CineworldAlerter.Core.Tests.csproj", "{F5D48405-87DB-4DC6-918C-3029E5C1CAEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineworldAlerter.Windows.Core", "CineworldAlerter.Windows.Core\CineworldAlerter.Windows.Core.csproj", "{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

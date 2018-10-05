@@ -6,7 +6,7 @@ using Cineworld.Api.Model;
 using CineworldAlerter.Core.Services;
 using Microsoft.Toolkit.Uwp.Notifications;
 
-namespace CineworldAlerter.Services
+namespace CineworldAlerter.Windows.Core.Services
 {
     public class ToastService : IToastService
     {

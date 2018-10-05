@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Cineworld.Api;
 using Cineworld.Api.Model;
 
-namespace CineworldAlerter.SampleData
+namespace CineworldAlerter.Windows.Core.SampleData
 {
     public class SampleDataApiClient : IApiClient
     {
