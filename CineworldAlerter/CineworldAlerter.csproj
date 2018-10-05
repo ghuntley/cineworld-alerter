@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Background\TimedRefreshBackgroundTask.cs" />
+    <Compile Include="SampleData\SampleDataApiClient.cs" />
     <Compile Include="Services\BackgroundLauncherService.cs" />
     <Compile Include="Services\BaseBackgroundService.cs" />
     <Compile Include="Services\RefreshBackgroundService.cs" />
