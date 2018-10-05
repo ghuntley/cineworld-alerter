@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Cimbalino.Toolkit.Extensions;
 using Cimbalino.Toolkit.Handlers;
 using Cimbalino.Toolkit.Services;
+using CineworldAlerter.Core.Extensions;
 using CineworldAlerter.Core.Services;
 using CineworldAlerter.ViewModels.Entities;
 using GalaSoft.MvvmLight;
@@ -14,6 +15,7 @@ namespace CineworldAlerter.ViewModels
     {
         private readonly IFilmService _filmService;
         private readonly ICinemaService _cinemaService;
+        private readonly IBackgroundLauncherService _backgroundLauncherService;
 
         private bool _isLoading;
 
@@ -36,16 +38,20 @@ namespace CineworldAlerter.ViewModels
 
         public MainViewModel(
             IFilmService filmService,
-            ICinemaService cinemaService)
+            ICinemaService cinemaService,
+            IBackgroundLauncherService backgroundLauncherService)
         {
             _filmService = filmService;
             _cinemaService = cinemaService;
+            _backgroundLauncherService = backgroundLauncherService;
         }
 
         public async Task OnNavigatedToAsync(NavigationServiceNavigationEventArgs eventArgs)
         {
             if (eventArgs.NavigationMode == NavigationServiceNavigationMode.Back)
                 return;
+
+            _backgroundLauncherService.Startup().DontAwait();
 
             await LoadData();
         }

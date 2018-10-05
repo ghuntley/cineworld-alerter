@@ -1,9 +1,11 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using CineworldAlerter.Background;
 using CineworldAlerter.Core;
 using CineworldAlerter.ViewModels;
 using CineworldAlerter.Views;
@@ -16,6 +18,8 @@ namespace CineworldAlerter
     /// </summary>
     sealed partial class App : Application
     {
+        private IUnityContainer _container;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -35,7 +39,7 @@ namespace CineworldAlerter
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            ConfigureContainer();
+            _container = ConfigureContainer();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -69,7 +73,7 @@ namespace CineworldAlerter
             }
         }
 
-        private void ConfigureContainer(bool configureLocator = true)
+        public static IUnityContainer ConfigureContainer(bool configureLocator = true)
         {
             var container = new UnityContainer();
             CoreUnityConfig.Configure(container);
@@ -77,6 +81,22 @@ namespace CineworldAlerter
 
             if (configureLocator)
                 ViewModelLocator.Configure(container);
+
+            return container;
+        }
+
+        protected override async void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+            var deferral = args.TaskInstance.GetDeferral();
+
+            var taskInstance = args.TaskInstance;
+            if (taskInstance.Task.Name == typeof(TimedRefreshBackgroundTask).Name)
+            {
+                await new TimedRefreshBackgroundTask().Run(taskInstance, _container);
+            }
+
+            deferral.Complete();
         }
 
         /// <summary>
