@@ -97,9 +97,7 @@ namespace CineworldAlerter.Core.Tests.Services
                 });
 
             _apiMock
-                .WithGetFilmsForCinema(new []{_jurassicParkLite, _jurassicWorldLite});
-
-            _apiMock
+                .WithGetFilmsForCinema(new []{_jurassicParkLite, _jurassicWorldLite})
                 .WithGetAllFilms(new [] {_jurassicParkFull, _jurassicWorldFull});
 
             SetupLocalStorage();

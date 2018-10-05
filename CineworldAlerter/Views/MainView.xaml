@@ -17,9 +17,11 @@
                    Style="{StaticResource TitleTextBlockStyle}"
                    Text="{x:Bind ViewModel.CinemaName, Mode=OneWay}" />
 
-        <GridView ItemsSource="{x:Bind ViewModel.Films}"
-                  SelectionMode="None"
-                  RelativePanel.Below="CinemaTitle">
+        <GridView x:Name="FilmsList"
+                  ItemsSource="{x:Bind ViewModel.Films}"
+                  RelativePanel.Above="CommandBar"
+                  RelativePanel.Below="CinemaTitle"
+                  SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="entities:FilmViewModel">
                     <RelativePanel Margin="12">
@@ -41,7 +43,19 @@
         <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
                       RelativePanel.AlignHorizontalCenterWithPanel="True"
                       RelativePanel.AlignVerticalCenterWithPanel="True"
-                      Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource FalseToVisibleConverter}}" />
+                      Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
+        <CommandBar x:Name="CommandBar"
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.Refresh}"
+                              Icon="Refresh"
+                              IsEnabled="{x:Bind ViewModel.CanRefresh, Mode=OneWay}"
+                              Label="Refresh" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
     </RelativePanel>
 </views:CineworldViewBase>
 

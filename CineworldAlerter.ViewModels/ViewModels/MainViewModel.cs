@@ -23,7 +23,7 @@ namespace CineworldAlerter.ViewModels
             set
             {
                 if (Set(ref _isLoading, value))
-                    RaisePropertyChanged(nameof(IsLoading));
+                    RaisePropertyChanged(nameof(CanRefresh));
             }
         }
 
@@ -49,6 +49,9 @@ namespace CineworldAlerter.ViewModels
 
             await LoadData();
         }
+
+        public async void Refresh()
+            => await LoadData(true);
 
         private async Task LoadData(bool isRefresh = false)
         {
