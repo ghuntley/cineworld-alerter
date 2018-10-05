@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Cineworld.Api\Cineworld.Api.csproj" />
+    <ProjectReference Include="..\Cineworld.Api\Cineworld.Api.csproj" />
     <ProjectReference Include="..\CineworldAlerter.Core\CineworldAlerter.Core.csproj" />
   </ItemGroup>
 

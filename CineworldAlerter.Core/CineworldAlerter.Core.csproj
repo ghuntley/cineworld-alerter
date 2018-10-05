@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Cineworld.Api\Cineworld.Api.csproj" />
+    <ProjectReference Include="..\Cineworld.Api\Cineworld.Api.csproj" />
   </ItemGroup>
 
 </Project>

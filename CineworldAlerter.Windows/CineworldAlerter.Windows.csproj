@@ -167,7 +167,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Cineworld.Api\Cineworld.Api.csproj">
+    <ProjectReference Include="..\Cineworld.Api\Cineworld.Api.csproj">
       <Project>{16d2c66d-22d3-4166-b9f6-132e09cfeb70}</Project>
       <Name>Cineworld.Api</Name>
     </ProjectReference>

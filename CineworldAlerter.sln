@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineworldAlerter", "CineworldAlerter\CineworldAlerter.csproj", "{05FD8267-E42D-4EA1-8C61-1B1F9832F88F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineworldAlerter.Windows", "CineworldAlerter.Windows\CineworldAlerter.Windows.csproj", "{05FD8267-E42D-4EA1-8C61-1B1F9832F88F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{06E48981-6D74-4474-AA5A-E00EE91642DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{85CE110E-9BE9-4EC8-881D-B3F83B3E66C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cineworld.Api", "..\Cineworld.Api\Cineworld.Api.csproj", "{16D2C66D-22D3-4166-B9F6-132E09CFEB70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cineworld.Api", "Cineworld.Api\Cineworld.Api.csproj", "{16D2C66D-22D3-4166-B9F6-132E09CFEB70}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineworldAlerter.Core", "CineworldAlerter.Core\CineworldAlerter.Core.csproj", "{CF4BEFC3-2F4A-4F6B-AD33-335C99E0C127}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineworldAlerter.ViewModels
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37E52450-300A-4412-8D46-244AD8E3DAD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineworldAlerter.Core.Tests", "CineworldAlerter.Core.Tests\CineworldAlerter.Core.Tests.csproj", "{F5D48405-87DB-4DC6-918C-3029E5C1CAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineworldAlerter.Core.Tests", "CineworldAlerter.Core.Tests\CineworldAlerter.Core.Tests.csproj", "{F5D48405-87DB-4DC6-918C-3029E5C1CAEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +115,22 @@ Global
 		{F5D48405-87DB-4DC6-918C-3029E5C1CAEF}.Release|x64.Build.0 = Release|Any CPU
 		{F5D48405-87DB-4DC6-918C-3029E5C1CAEF}.Release|x86.ActiveCfg = Release|Any CPU
 		{F5D48405-87DB-4DC6-918C-3029E5C1CAEF}.Release|x86.Build.0 = Release|Any CPU
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|ARM.ActiveCfg = Debug|ARM
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|ARM.Build.0 = Debug|ARM
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|x64.ActiveCfg = Debug|x64
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|x64.Build.0 = Debug|x64
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|x86.ActiveCfg = Debug|x86
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Debug|x86.Build.0 = Debug|x86
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|ARM.ActiveCfg = Release|ARM
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|ARM.Build.0 = Release|ARM
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|x64.ActiveCfg = Release|x64
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|x64.Build.0 = Release|x64
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|x86.ActiveCfg = Release|x86
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +141,7 @@ Global
 		{CF4BEFC3-2F4A-4F6B-AD33-335C99E0C127} = {85CE110E-9BE9-4EC8-881D-B3F83B3E66C2}
 		{0AE23DCE-B0DA-48D1-AEB6-139C3C6E6024} = {85CE110E-9BE9-4EC8-881D-B3F83B3E66C2}
 		{F5D48405-87DB-4DC6-918C-3029E5C1CAEF} = {37E52450-300A-4412-8D46-244AD8E3DAD6}
+		{DA8FCFD0-E47B-4055-BACA-99DC0CB893BF} = {06E48981-6D74-4474-AA5A-E00EE91642DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7947D7A8-4133-4F20-B14C-4B01C76D969E}
