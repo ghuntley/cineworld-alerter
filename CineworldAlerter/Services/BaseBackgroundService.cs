@@ -11,6 +11,8 @@ namespace CineworldAlerter.Services
         public string BackgroundAgentName => $"{typeof(TTaskType).Name}";
         public string BackgroundAgentEntryPoint { get; } = typeof(TTaskType).FullName;
 
+        protected virtual bool UseEntryPoint { get; } = false;
+
         public bool AgentRunning
         {
             get
@@ -64,7 +66,7 @@ namespace CineworldAlerter.Services
             }
         }
 
-        private void CreateTask(bool includeEntryPoint = false)
+        private void CreateTask()
         {
             var task = BackgroundTaskRegistration.AllTasks.FirstOrDefault(x => x.Value.Name == BackgroundAgentName);
             if (task.Value != null) return;
@@ -76,7 +78,7 @@ namespace CineworldAlerter.Services
                     Name = BackgroundAgentName,
                 };
 
-                if (includeEntryPoint)
+                if (UseEntryPoint)
                     taskBuilder.TaskEntryPoint = BackgroundAgentEntryPoint;
 
                 var trigger = GetTrigger();

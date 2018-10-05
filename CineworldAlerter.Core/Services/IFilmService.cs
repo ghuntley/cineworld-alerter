@@ -51,6 +51,8 @@ namespace CineworldAlerter.Core.Services
             var localFilms = await GetLocalFilms();
             var allFilms = await _apiClient.GetAllFilms();
 
+            var isFirstRun = !localFilms.Any();
+
             var existingLocalFilms = localFilms
                 .Where(x => externalFilms.Any(y => y.FilmId == x.Code))
                 .ToList();
@@ -79,7 +81,7 @@ namespace CineworldAlerter.Core.Services
                 .Where(x => addedExternalFilms.Any(y => y.FilmId == x.Code))
                 .ToList();
 
-            if (addedExternalFilms.Any())
+            if (addedExternalFilms.Any() && !isFirstRun)
             {
                 await _toastService.DisplayToasts(addedLocalFilms);
                 localFilms.AddRange(addedLocalFilms);

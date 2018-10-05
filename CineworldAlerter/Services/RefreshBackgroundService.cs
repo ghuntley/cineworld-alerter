@@ -6,6 +6,6 @@ namespace CineworldAlerter.Services
     public class RefreshBackgroundService : BaseBackgroundService<TimedRefreshBackgroundTask>
     {
         protected override IBackgroundTrigger GetTrigger()
-            => new TimeTrigger(30, false);
+            => new TimeTrigger(15, false);
     }
 }
