@@ -79,7 +79,14 @@ namespace CineworldAlerter.Windows.Core.SampleData
         };
 
         public Task<List<Cinema>> GetCinemas(CancellationToken cancellationToken = default(CancellationToken))
-            => Task.FromResult(new List<Cinema>());
+            => Task.FromResult(new List<Cinema>
+            {
+                new Cinema
+                {
+                    DisplayName = "Poole",
+                    Id = "8112"
+                }
+            });
 
         public Task<List<CinemaFilm>> GetFilmsForCinema(string cinemaId, CancellationToken cancellationToken = default(CancellationToken))
         {

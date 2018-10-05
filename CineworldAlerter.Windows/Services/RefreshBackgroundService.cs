@@ -1,5 +1,5 @@
 ﻿using Windows.ApplicationModel.Background;
-using CineworldAlerter.Background;
+using CineworldAlerter.Windows.BackgroundTasks;
 
 namespace CineworldAlerter.Services
 {
@@ -7,5 +7,7 @@ namespace CineworldAlerter.Services
     {
         protected override IBackgroundTrigger GetTrigger()
             => new TimeTrigger(15, false);
+
+        protected override bool UseEntryPoint { get; } = true;
     }
 }
