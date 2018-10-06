@@ -8,7 +8,8 @@ namespace CineworldAlerter.Services
     {
         private readonly IBackgroundService[] _backgroundTaskServices =
         {
-            new RefreshBackgroundService()
+            new RefreshBackgroundService(),
+            new ToastActionBackgroundService()
         };
 
         public Task Startup() 

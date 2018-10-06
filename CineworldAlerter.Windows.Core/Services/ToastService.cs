@@ -11,6 +11,8 @@ namespace CineworldAlerter.Windows.Core.Services
 {
     public class ToastService : IToastService
     {
+        public const string LauncherCode = "L#";
+
         public Task DisplayToasts(IEnumerable<FullFilm> films)
             => Task.Run(() =>
             {
@@ -49,6 +51,11 @@ namespace CineworldAlerter.Windows.Core.Services
                 {
                     BindingGeneric = new ToastBindingGeneric
                     {
+                        AppLogoOverride = new ToastGenericAppLogo
+                        {
+                            Source = ToCineworldLink(film.PosterSrc),
+                            HintCrop = ToastGenericAppLogoCrop.None
+                        },
                         Children =
                         {
                             new AdaptiveText
@@ -63,7 +70,20 @@ namespace CineworldAlerter.Windows.Core.Services
                             },
                         }
                     }
+                },
+                Actions = new ToastActionsCustom
+                {
+                    Buttons =
+                    {
+                        new ToastButton("Book Now", $"{LauncherCode}{ToCineworldLink(film.Url)}")
+                        {
+                            ActivationType = ToastActivationType.Background
+                        }
+                    }
                 }
             };
+
+        private static string ToCineworldLink(string endPoint)
+            => $"https://www.cineworld.co.uk{endPoint}";
     }
 }

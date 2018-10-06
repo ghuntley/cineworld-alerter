@@ -16,8 +16,10 @@ namespace CineworldAlerter.Windows.Core.SampleData
             {
                 Code = "1",
                 FeatureTitle = "Jurassic Park",
-                Attributes = {FilmCategory.UnlimitedScreening},
-                DateStarted = DateTimeOffset.Now.AddDays(6)
+                Attributes = new List<FilmCategory> {FilmCategory.UnlimitedScreening},
+                DateStarted = DateTimeOffset.Now.AddDays(6),
+                Url = "/films/venom",
+                PosterSrc = "/xmedia-cw/repo/feats/posters/HO00005111-lg.jpg"
             },
             new FullFilm
             {

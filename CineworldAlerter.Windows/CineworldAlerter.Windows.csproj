@@ -98,6 +98,7 @@
     <Compile Include="Services\BackgroundLauncherService.cs" />
     <Compile Include="Services\BaseBackgroundService.cs" />
     <Compile Include="Services\RefreshBackgroundService.cs" />
+    <Compile Include="Services\ToastActionBackgroundService.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
