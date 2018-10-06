@@ -15,7 +15,9 @@ namespace CineworldAlerter.Windows.Core.SampleData
             new FullFilm
             {
                 Code = "1",
-                FeatureTitle = "Jurassic Park"
+                FeatureTitle = "Jurassic Park",
+                Attributes = {FilmCategory.UnlimitedScreening},
+                DateStarted = DateTimeOffset.Now.AddDays(6)
             },
             new FullFilm
             {

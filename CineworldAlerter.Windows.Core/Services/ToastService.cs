@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
+using Cineworld.Api.Extensions;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Services;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -16,6 +17,9 @@ namespace CineworldAlerter.Windows.Core.Services
                 foreach (var film in films)
                 {
                     var toastContent = CreateToastContent(film);
+
+                    CheckForUnlimitedScreening(film, toastContent);
+
                     var toast = new ToastNotification(toastContent.GetXml())
                     {
                         ExpirationTime = DateTimeOffset.Now.AddDays(2)
@@ -24,6 +28,19 @@ namespace CineworldAlerter.Windows.Core.Services
                     ToastNotificationManager.CreateToastNotifier().Show(toast);
                 }
             });
+
+        private static void CheckForUnlimitedScreening(FullFilm film, ToastContent toastContent)
+        {
+            if (film.IsUnlimitedScreening()
+                && film.DateStarted.HasValue)
+            {
+                toastContent.Visual.BindingGeneric.Children.Add(new AdaptiveText
+                {
+                    Text = $"Screening is on {film.DateStarted:dddd MMMM dd}",
+                    HintWrap = true
+                });
+            }
+        }
 
         private ToastContent CreateToastContent(FullFilm film)
             => new ToastContent
@@ -43,7 +60,7 @@ namespace CineworldAlerter.Windows.Core.Services
                             {
                                 Text = $"{film.FeatureTitle} is now available to book online.",
                                 HintWrap = true
-                            }
+                            },
                         }
                     }
                 }

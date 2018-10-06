@@ -1,15 +1,19 @@
-﻿using Cineworld.Api.Converters;
+﻿using System;
+using System.Collections.Generic;
+using Cineworld.Api.Converters;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Cineworld.Api.Model
 {
+    [DebuggerDisplay("Name: {" + nameof(FeatureTitle) + "}")]
     public class FullFilm
     {
         [JsonProperty("code")]
         public string Code { get; set; }
 
         [JsonProperty("attributes", ItemConverterType = typeof(FilmCategoryConverter))]
-        public FilmCategory[] Attributes { get; set; }
+        public List<FilmCategory> Attributes { get; set; }
 
         [JsonProperty("featureTitle")]
         public string FeatureTitle { get; set; }
@@ -24,6 +28,6 @@ namespace Cineworld.Api.Model
         public int Weight { get; set; }
 
         [JsonProperty("dateStarted")]
-        public string DateStarted { get; set; }
+        public DateTimeOffset? DateStarted { get; set; }
     }
 }
