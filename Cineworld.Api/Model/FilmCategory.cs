@@ -36,7 +36,7 @@ namespace Cineworld.Api.Model
         Vip,
         [Category(Code = "cinebabies", IsPeopleTypeScreening = true, DisplayName = "CineBabies")]
         Cinebabies,
-        [Category(Code = "tbc", DisplayName = "TBC")]
+        [Category(Code = "tbc", DisplayName = "TBC", IsRating = true)]
         Tbc,
         [Category(Code = "unlimited-screening", DisplayName = "Unlimited Screening")]
         UnlimitedScreening,

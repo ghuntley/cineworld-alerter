@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Cimbalino.Toolkit.Services;
 using Cineworld.Api.Model;
 
@@ -41,7 +40,7 @@ namespace CineworldAlerter.Core.Services
         private void Load()
         {
             AlertOnEverything = LocalSettings.Get(GetContainerKey(nameof(AlertOnEverything)), true);
-            DontShowAlertsFor = LocalSettings.Get<IEnumerable<FilmCategory>>(GetContainerKey(nameof(DontShowAlertsFor)));
+            DontShowAlertsFor = LocalSettings.Get(GetContainerKey(nameof(DontShowAlertsFor)), new List<FilmCategory>());
         }
 
         private string GetContainerKey(string key)

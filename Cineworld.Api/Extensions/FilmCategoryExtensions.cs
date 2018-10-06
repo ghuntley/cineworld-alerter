@@ -14,10 +14,10 @@ namespace Cineworld.Api.Extensions
         public static string GetDisplayName(this FilmCategory category)
             => category.GetAttribute<CategoryAttribute>()?.DisplayName ?? category.ToString();
 
-        public static bool GetIsRating(this FilmCategory category)
+        public static bool IsRating(this FilmCategory category)
             => category.GetAttribute<CategoryAttribute>()?.IsRating ?? false;
 
-        public static bool GetIsPeopleTypeScreening(this FilmCategory category)
+        public static bool IsPeopleTypeScreening(this FilmCategory category)
             => category.GetAttribute<CategoryAttribute>()?.IsPeopleTypeScreening ?? false;
 
         private static TAttribute GetAttribute<TAttribute>(this object obj)
