@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Cineworld.Api.Model
 {
+    [DebuggerDisplay("Name: {" + nameof(FilmName) + "}")]
     public class CinemaFilm
     {
         [JsonProperty("filmId")]

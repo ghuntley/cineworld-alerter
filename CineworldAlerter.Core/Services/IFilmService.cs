@@ -9,5 +9,6 @@ namespace CineworldAlerter.Core.Services
         Task<List<FullFilm>> GetLocalFilms();
         Task<List<FullFilm>> GetAllFilms();
         Task RefreshFilms(string cinemaId);
+        Task DeleteLocalFilms();
     }
 }

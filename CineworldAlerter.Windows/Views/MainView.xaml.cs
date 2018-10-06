@@ -1,4 +1,6 @@
-﻿using CineworldAlerter.ViewModels;
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
+using CineworldAlerter.ViewModels;
 
 namespace CineworldAlerter.Views
 {
@@ -12,6 +14,11 @@ namespace CineworldAlerter.Views
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void ChangeCinemaButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(ChangeCinemaButton);
         }
     }
 }

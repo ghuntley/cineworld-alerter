@@ -17,6 +17,20 @@
                    Style="{StaticResource TitleTextBlockStyle}"
                    Text="{x:Bind ViewModel.CinemaName, Mode=OneWay}" />
 
+        <HyperlinkButton x:Name="ChangeCinemaButton"
+                         Margin="6,0"
+                         Click="ChangeCinemaButton_OnClick"
+                         Content="Change"
+                         FontSize="10"
+                         RelativePanel.AlignVerticalCenterWith="CinemaTitle"
+                         RelativePanel.RightOf="CinemaTitle">
+            <FlyoutBase.AttachedFlyout>
+                <ListPickerFlyout DisplayMemberPath="DisplayName"
+                                  ItemsSource="{x:Bind ViewModel.Cinemas}"
+                                  SelectedItem="{x:Bind ViewModel.SelectedCinema, Mode=TwoWay}" />
+            </FlyoutBase.AttachedFlyout>
+        </HyperlinkButton>
+
         <GridView x:Name="FilmsList"
                   ItemsSource="{x:Bind ViewModel.Films}"
                   RelativePanel.Above="CommandBar"
@@ -28,13 +42,15 @@
                         <Image x:Name="Poster"
                                Height="200"
                                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                               Source="{x:Bind ImageUrl, Mode=OneWay}" />
-                        <TextBlock RelativePanel.AlignLeftWithPanel="True"
+                               Source="{x:Bind ImageUrl, Mode=OneWay}"
+                               ToolTipService.ToolTip="{x:Bind Name, Mode=OneWay}" />
+                        <TextBlock FontSize="12"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="Poster"
-                                   Style="{StaticResource SubtitleTextBlockStyle}"
                                    Text="{x:Bind Name, Mode=OneWay}"
-                                   TextAlignment="Center" />
+                                   TextAlignment="Center"
+                                   TextWrapping="WrapWholeWords" />
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>

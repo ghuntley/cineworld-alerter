@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Cimbalino.Toolkit.Extensions;
 using Cimbalino.Toolkit.Handlers;
 using Cimbalino.Toolkit.Services;
+using Cineworld.Api.Model;
 using CineworldAlerter.Core.Extensions;
 using CineworldAlerter.Core.Services;
 using CineworldAlerter.ViewModels.Entities;
@@ -18,6 +19,7 @@ namespace CineworldAlerter.ViewModels
         private readonly IBackgroundLauncherService _backgroundLauncherService;
 
         private bool _isLoading;
+        private Cinema _selectedCinema;
 
         public bool IsLoading
         {
@@ -29,12 +31,25 @@ namespace CineworldAlerter.ViewModels
             }
         }
 
+        public Cinema SelectedCinema
+        {
+            get => _selectedCinema;
+            set
+            {
+                if (Set(ref _selectedCinema, value))
+                    UpdateCinema(value).DontAwait();
+            }
+        }
+
         public bool CanRefresh => !IsLoading;
 
         public string CinemaName => _cinemaService.CurrentCinema.DisplayName;
 
         public ObservableCollection<FilmViewModel> Films { get; set; }
             = new ObservableCollection<FilmViewModel>();
+
+        public ObservableCollection<Cinema> Cinemas { get; }
+            = new ObservableCollection<Cinema>();
 
         public MainViewModel(
             IFilmService filmService,
@@ -54,6 +69,8 @@ namespace CineworldAlerter.ViewModels
             _backgroundLauncherService.Startup().DontAwait();
 
             await LoadData();
+
+            LoadCinemas().DontAwait();
         }
 
         public async void Refresh()
@@ -74,6 +91,25 @@ namespace CineworldAlerter.ViewModels
             Films.AddRange(filmViewModels);
 
             IsLoading = false;
+        }
+
+        private async Task LoadCinemas()
+        {
+            var cinemas = await _cinemaService.GetCurrentCinemas();
+            Cinemas.Clear();
+            Cinemas.AddRange(cinemas);
+
+            _selectedCinema = Cinemas.FirstOrDefault(x => x.Id == _cinemaService.CurrentCinema.Id);
+            RaisePropertyChanged(nameof(SelectedCinema));
+        }
+
+        private async Task UpdateCinema(Cinema cinema)
+        {
+            _cinemaService.ChangeCinema(cinema);
+            await _filmService.DeleteLocalFilms();
+            await LoadData(true);
+
+            RaisePropertyChanged(nameof(CinemaName));
         }
     }
 }

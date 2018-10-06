@@ -23,5 +23,6 @@ namespace CineworldAlerter.Core.Services
         Task<TValue> Get(TKey key);
 
         void ClearCache();
+        void ClearCache(TKey key);
     }
 }

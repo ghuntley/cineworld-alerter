@@ -32,6 +32,9 @@ namespace CineworldAlerter.Core.Services
         public void ClearCache()
             => _retrievalTasks.Clear();
 
+        public void ClearCache(TKey key) 
+            => _retrievalTasks.TryRemove(key, out _);
+
         private void ThrowIfNotInitialised()
         {
             if (!IsInitialised)

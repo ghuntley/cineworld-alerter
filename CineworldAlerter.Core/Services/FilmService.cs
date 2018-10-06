@@ -94,6 +94,15 @@ namespace CineworldAlerter.Core.Services
             await WriteFilmsToFile(AllFilmCacheFile, allFilms);
         }
 
+        public async Task DeleteLocalFilms()
+        {
+            if (!await _storageService.Local.FileExistsAsync(FilmCacheFile))
+                return;
+
+            await _storageService.Local.DeleteFileAsync(FilmCacheFile);
+            _filmCache.ClearCache(FilmCacheFile);
+        }
+
         private void RemoveFilms(
             ICollection<FullFilm> localFilms, 
             IEnumerable<FullFilm> filmsToRemove)
