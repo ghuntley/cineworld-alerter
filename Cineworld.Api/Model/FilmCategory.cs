@@ -40,9 +40,9 @@ namespace Cineworld.Api.Model
         Tbc,
         [Category(Code = "unlimited-screening", DisplayName = "Unlimited Screening")]
         UnlimitedScreening,
-        [Category(Code = "autism-friendly", DisplayName = "Autism Friendly")]
+        [Category(Code = "autism-friendly", DisplayName = "Autism Friendly", IsPeopleTypeScreening = true)]
         AutismFriendly,
-        [Category(Code = "dementia-friendly", DisplayName = "Dementia Friendly")]
+        [Category(Code = "dementia-friendly", DisplayName = "Dementia Friendly", IsPeopleTypeScreening = true)]
         DementiaFriendly,
         [Category(Code = "movies-for-juniors", IsPeopleTypeScreening = true, DisplayName = "Movies For Juniors")]
         MoviesForJuniors,

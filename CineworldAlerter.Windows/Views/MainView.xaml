@@ -70,6 +70,9 @@
                               Icon="Refresh"
                               IsEnabled="{x:Bind ViewModel.CanRefresh, Mode=OneWay}"
                               Label="Refresh" />
+                <AppBarButton Click="{x:Bind ViewModel.NavigateToSettings}"
+                              Icon="Setting"
+                              Label="Settings" />
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </RelativePanel>

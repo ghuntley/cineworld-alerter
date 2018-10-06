@@ -1,0 +1,64 @@
+﻿<local:CineworldViewBase x:Class="CineworldAlerter.Views.SettingsView"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:entities="using:CineworldAlerter.ViewModels.Entities"
+                         xmlns:local="using:CineworldAlerter.Views"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                         DataContext="{Binding Settings, Source={StaticResource Locator}}"
+                         mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="FilmCategoryTemplate"
+                      x:DataType="entities:FilmCategoryViewModel">
+            <CheckBox Content="{x:Bind Name, Mode=OneWay}"
+                      IsChecked="{x:Bind DontAlertMe, Mode=TwoWay}" />
+        </DataTemplate>
+    </Page.Resources>
+
+    <RelativePanel>
+        <TextBlock x:Name="SettingsTitle"
+                   Margin="12"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   RelativePanel.AlignTopWithPanel="True"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Text="Settings" />
+
+        <ToggleSwitch x:Name="ShowAllNotifications"
+                      Margin="12,0"
+                      Header="Show me all notifications"
+                      IsOn="{x:Bind ViewModel.ShowMeEverything, Mode=TwoWay}"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.Below="SettingsTitle" />
+
+        <TextBlock x:Name="CategoryDescription"
+                   Margin="12,0"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   RelativePanel.Below="ShowAllNotifications">
+            <Run Text="Please only tick the items that you do" />
+            <Bold><Run Text="NOT" /></Bold>
+            <Run Text="want notifications for." />
+        </TextBlock>
+
+        <ListView x:Name="Ratings"
+                  Margin="12"
+                  Header="Film Ratings"
+                  IsEnabled="{x:Bind ViewModel.ShowMeEverything, Converter={StaticResource NegativeBooleanConverter}}"
+                  ItemTemplate="{StaticResource FilmCategoryTemplate}"
+                  ItemsSource="{x:Bind ViewModel.FilmRatings}"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.Below="CategoryDescription"
+                  SelectionMode="None" />
+
+        <ListView x:Name="People"
+                  Margin="24,12"
+                  Header="People-based screenings"
+                  IsEnabled="{x:Bind ViewModel.ShowMeEverything, Converter={StaticResource NegativeBooleanConverter}}"
+                  ItemTemplate="{StaticResource FilmCategoryTemplate}"
+                  ItemsSource="{x:Bind ViewModel.PersonBasedCategories}"
+                  RelativePanel.Below="CategoryDescription"
+                  RelativePanel.RightOf="Ratings"
+                  SelectionMode="None" />
+    </RelativePanel>
+</local:CineworldViewBase>

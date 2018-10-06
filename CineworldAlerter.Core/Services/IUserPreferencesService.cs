@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cimbalino.Toolkit.Services;
 using Cineworld.Api.Model;
+using Newtonsoft.Json;
 
 namespace CineworldAlerter.Core.Services
 {
@@ -34,13 +35,17 @@ namespace CineworldAlerter.Core.Services
         public void Save()
         {
             LocalSettings.Set(GetContainerKey(nameof(AlertOnEverything)), AlertOnEverything);
-            LocalSettings.Set(GetContainerKey(nameof(DontShowAlertsFor)), DontShowAlertsFor);
+            LocalSettings.Set(GetContainerKey(nameof(DontShowAlertsFor)), JsonConvert.SerializeObject(DontShowAlertsFor));
         }
 
         private void Load()
         {
             AlertOnEverything = LocalSettings.Get(GetContainerKey(nameof(AlertOnEverything)), true);
-            DontShowAlertsFor = LocalSettings.Get(GetContainerKey(nameof(DontShowAlertsFor)), new List<FilmCategory>());
+
+            var json = LocalSettings.Get<string>(GetContainerKey(nameof(DontShowAlertsFor)));
+            DontShowAlertsFor = !string.IsNullOrEmpty(json)
+                ? JsonConvert.DeserializeObject<List<FilmCategory>>(json)
+                : new List<FilmCategory>();
         }
 
         private string GetContainerKey(string key)

@@ -17,6 +17,7 @@ namespace CineworldAlerter.ViewModels
         private readonly IFilmService _filmService;
         private readonly ICinemaService _cinemaService;
         private readonly IBackgroundLauncherService _backgroundLauncherService;
+        private readonly ICineworldNavigationService _navigationService;
 
         private bool _isLoading;
         private Cinema _selectedCinema;
@@ -54,11 +55,13 @@ namespace CineworldAlerter.ViewModels
         public MainViewModel(
             IFilmService filmService,
             ICinemaService cinemaService,
-            IBackgroundLauncherService backgroundLauncherService)
+            IBackgroundLauncherService backgroundLauncherService,
+            ICineworldNavigationService navigationService)
         {
             _filmService = filmService;
             _cinemaService = cinemaService;
             _backgroundLauncherService = backgroundLauncherService;
+            _navigationService = navigationService;
         }
 
         public async Task OnNavigatedToAsync(NavigationServiceNavigationEventArgs eventArgs)
@@ -72,6 +75,9 @@ namespace CineworldAlerter.ViewModels
 
             LoadCinemas().DontAwait();
         }
+
+        public void NavigateToSettings()
+            => _navigationService.NavigateToSettingsPage();
 
         public async void Refresh()
             => await LoadData(true);

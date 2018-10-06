@@ -4,5 +4,6 @@
     {
         bool NavigateToMainPage(object parameter = null);
         void ClearBackStack();
+        bool NavigateToSettingsPage(object parameter = null);
     }
 }

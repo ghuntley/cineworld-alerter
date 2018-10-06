@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,26 +50,36 @@ namespace CineworldAlerter.ViewModels
             var categories = EnumHelper.GetValues<FilmCategory>();
 
             ConfigureRatings(categories);
+            ConfigurePeopleScreenings(categories);
 
             _showMeEverything = _userPreferencesService.AlertOnEverything;
             return Task.CompletedTask;
         }
 
         private void ConfigureRatings(IEnumerable<FilmCategory> categories)
+            => ConfigureList(categories, FilmRatings, category => category.IsRating());
+
+        private void ConfigurePeopleScreenings(IEnumerable<FilmCategory> categories)
+            => ConfigureList(categories, PersonBasedCategories, category => category.IsPeopleTypeScreening());
+
+        private void ConfigureList(
+            IEnumerable<FilmCategory> categories, 
+            ObservableCollection<FilmCategoryViewModel> collection,
+            Func<FilmCategory, bool> isValidFunc)
         {
-            var ignoredRatings = _userPreferencesService.DontShowAlertsFor
-                .Where(x => x.IsRating())
+            var alreadyIgnoredCategories = _userPreferencesService.DontShowAlertsFor
+                .Where(isValidFunc)
                 .ToList();
 
-            var ratings = categories
-                .Where(x => x.IsRating())
+            var relevantCategories = categories
+                .Where(isValidFunc)
                 .Select(x => new FilmCategoryViewModel(x)
                 {
-                    DontAlertMe = ignoredRatings.Contains(x)
+                    DontAlertMe = alreadyIgnoredCategories.Contains(x)
                 });
 
-            FilmRatings.Clear();
-            FilmRatings.AddRange(ratings);
+            collection.Clear();
+            collection.AddRange(relevantCategories);
         }
 
         public Task OnNavigatingFromAsync(NavigationServiceNavigatingCancelEventArgs eventArgs)

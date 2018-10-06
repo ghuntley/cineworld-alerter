@@ -19,5 +19,8 @@ namespace CineworldAlerter.Services
 
         public void ClearBackStack() 
             => _navigationService.ClearBackstack();
+
+        public bool NavigateToSettingsPage(object parameter = null) 
+            => _navigationService.Navigate<SettingsView>(parameter);
     }
 }

@@ -1,8 +1,11 @@
-﻿using Cimbalino.Toolkit.Controls;
+﻿using Windows.UI.Xaml.Navigation;
+using Cimbalino.Toolkit.Controls;
 
 namespace CineworldAlerter.Views
 {
-    public class CineworldViewBase : ExtendedPageBase
+    public abstract class CineworldViewBase : ExtendedPageBase
     {
+        protected CineworldViewBase()
+            => NavigationCacheMode = NavigationCacheMode.Required;
     }
 }
