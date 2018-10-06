@@ -11,5 +11,6 @@ namespace CineworldAlerter.ViewModels
 
         public StartupViewModel Startup => _container.Resolve<StartupViewModel>();
         public MainViewModel Main => _container.Resolve<MainViewModel>();
+        public SettingsViewModel Settings => _container.Resolve<SettingsViewModel>();
     }
 }

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Cimbalino.Toolkit.Services;
-using Cineworld.Api;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Services;
 using CineworldAlerter.Core.Tests.Mocks;

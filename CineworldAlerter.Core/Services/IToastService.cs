@@ -8,4 +8,9 @@ namespace CineworldAlerter.Core.Services
     {
         Task DisplayToasts(IEnumerable<FullFilm> films);
     }
+
+    public interface IToastProxyService
+    {
+        void ShowToast(FullFilm film, bool isUnlimitedScreening);
+    }
 }

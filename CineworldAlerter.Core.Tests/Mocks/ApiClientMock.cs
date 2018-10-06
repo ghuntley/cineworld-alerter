@@ -7,14 +7,8 @@ using Moq;
 
 namespace CineworldAlerter.Core.Tests.Mocks
 {
-    public class ApiClientMock
+    public class ApiClientMock : MockBase<IApiClient>
     {
-        private Mock<IApiClient> _mock;
-
-        public Mock<IApiClient> Mock => _mock ?? (_mock = new Mock<IApiClient>());
-
-        public IApiClient Object => Mock.Object;
-
         public ApiClientMock WithGetFilmsForCinema(IEnumerable<CinemaFilm> films)
         {
             Mock

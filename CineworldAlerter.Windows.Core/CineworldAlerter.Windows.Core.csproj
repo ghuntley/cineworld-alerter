@@ -107,7 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="SampleData\SampleDataApiClient.cs" />
-    <Compile Include="Services\ToastService.cs" />
+    <Compile Include="Services\ToastProxyService.cs" />
     <Compile Include="UwpCoreUnityConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\CineworldAlerter.Windows.Core.rd.xml" />

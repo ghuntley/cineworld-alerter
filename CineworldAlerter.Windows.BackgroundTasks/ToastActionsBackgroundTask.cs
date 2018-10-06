@@ -2,6 +2,7 @@
 using Windows.ApplicationModel.Background;
 using Windows.System;
 using Windows.UI.Notifications;
+using CineworldAlerter.Core.Services;
 using CineworldAlerter.Windows.Core.Services;
 
 namespace CineworldAlerter.Windows.BackgroundTasks

@@ -1,40 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.UI.Notifications;
-using Cineworld.Api.Extensions;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Services;
 using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace CineworldAlerter.Windows.Core.Services
 {
-    public class ToastService : IToastService
+    public class ToastProxyService : IToastProxyService
     {
-        public const string LauncherCode = "L#";
-
-        public Task DisplayToasts(IEnumerable<FullFilm> films)
-            => Task.Run(() =>
-            {
-                foreach (var film in films)
-                {
-                    var toastContent = CreateToastContent(film);
-
-                    CheckForUnlimitedScreening(film, toastContent);
-
-                    var toast = new ToastNotification(toastContent.GetXml())
-                    {
-                        ExpirationTime = DateTimeOffset.Now.AddDays(2)
-                    };
-
-                    ToastNotificationManager.CreateToastNotifier().Show(toast);
-                }
-            });
-
-        private static void CheckForUnlimitedScreening(FullFilm film, ToastContent toastContent)
+        public void ShowToast(FullFilm film, bool isUnlimitedScreening)
         {
-            if (film.IsUnlimitedScreening()
-                && film.DateStarted.HasValue)
+            var toastContent = CreateToastContent(film);
+
+            if (isUnlimitedScreening && film.DateStarted.HasValue)
             {
                 toastContent.Visual.BindingGeneric.Children.Add(new AdaptiveText
                 {
@@ -42,6 +20,13 @@ namespace CineworldAlerter.Windows.Core.Services
                     HintWrap = true
                 });
             }
+
+            var toast = new ToastNotification(toastContent.GetXml())
+            {
+                ExpirationTime = DateTimeOffset.Now.AddDays(2)
+            };
+
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
         private ToastContent CreateToastContent(FullFilm film)
@@ -75,7 +60,7 @@ namespace CineworldAlerter.Windows.Core.Services
                 {
                     Buttons =
                     {
-                        new ToastButton("Book Now", $"{LauncherCode}{ToCineworldLink(film.Url)}")
+                        new ToastButton("Book Now", $"{ToastService.LauncherCode}{ToCineworldLink(film.Url)}")
                         {
                             ActivationType = ToastActivationType.Background
                         }

@@ -13,7 +13,7 @@ namespace CineworldAlerter.Windows.Core
             container.RegisterType<IApiClient, ApiClient>();
             container.RegisterType<IStorageService, StorageService>();
             container.RegisterType<IApplicationSettingsService, ApplicationSettingsService>();
-            container.RegisterType<IToastService, ToastService>();
+            container.RegisterType<IToastProxyService, ToastProxyService>();
         }
     }
 }
