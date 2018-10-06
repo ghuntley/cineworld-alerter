@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Cineworld.Api.Converters;
+using Newtonsoft.Json;
 
 namespace Cineworld.Api.Model
 {
@@ -7,8 +8,8 @@ namespace Cineworld.Api.Model
         [JsonProperty("code")]
         public string Code { get; set; }
 
-        [JsonProperty("attributes")]
-        public string[] Attributes { get; set; }
+        [JsonProperty("attributes", ItemConverterType = typeof(FilmCategoryConverter))]
+        public FilmCategory[] Attributes { get; set; }
 
         [JsonProperty("featureTitle")]
         public string FeatureTitle { get; set; }
