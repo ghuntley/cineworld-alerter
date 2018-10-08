@@ -40,20 +40,23 @@
                   SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="entities:FilmViewModel">
-                    <RelativePanel Margin="12">
-                        <Image x:Name="Poster"
-                               Height="200"
-                               RelativePanel.AlignHorizontalCenterWithPanel="True"
-                               Source="{x:Bind ImageUrl, Mode=OneWay}"
-                               ToolTipService.ToolTip="{x:Bind Name, Mode=OneWay}" />
-                        <TextBlock FontSize="12"
-                                   RelativePanel.AlignLeftWithPanel="True"
-                                   RelativePanel.AlignRightWithPanel="True"
-                                   RelativePanel.Below="Poster"
-                                   Text="{x:Bind Name, Mode=OneWay}"
-                                   TextAlignment="Center"
-                                   TextWrapping="WrapWholeWords" />
-                    </RelativePanel>
+                    <Button Click="{x:Bind LaunchBooking}"
+                            Style="{StaticResource EmptyButtonStyle}">
+                        <RelativePanel Margin="12">
+                            <Image x:Name="Poster"
+                                   Height="200"
+                                   RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                   Source="{x:Bind ImageUrl, Mode=OneWay}"
+                                   ToolTipService.ToolTip="{x:Bind Name, Mode=OneWay}" />
+                            <TextBlock FontSize="12"
+                                       RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.Below="Poster"
+                                       Text="{x:Bind Name, Mode=OneWay}"
+                                       TextAlignment="Center"
+                                       TextWrapping="WrapWholeWords" />
+                        </RelativePanel>
+                    </Button>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>

@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Notifications;
 using Cineworld.Api.Model;
+using CineworldAlerter.Core.Extensions;
 using CineworldAlerter.Core.Services;
 using Microsoft.Toolkit.Uwp.Notifications;
 
@@ -38,7 +39,7 @@ namespace CineworldAlerter.Windows.Core.Services
                     {
                         AppLogoOverride = new ToastGenericAppLogo
                         {
-                            Source = ToCineworldLink(film.PosterSrc),
+                            Source = film.PosterSrc.ToCineworldLink(),
                             HintCrop = ToastGenericAppLogoCrop.None
                         },
                         Children =
@@ -60,15 +61,12 @@ namespace CineworldAlerter.Windows.Core.Services
                 {
                     Buttons =
                     {
-                        new ToastButton("Book Now", $"{ToastService.LauncherCode}{ToCineworldLink(film.Url)}")
+                        new ToastButton("Book Now", $"{ToastService.LauncherCode}{film.Url.ToCineworldLink()}")
                         {
                             ActivationType = ToastActivationType.Background
                         }
                     }
                 }
             };
-
-        private static string ToCineworldLink(string endPoint)
-            => $"https://www.cineworld.co.uk{endPoint}";
     }
 }

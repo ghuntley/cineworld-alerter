@@ -19,8 +19,8 @@ namespace CineworldAlerter.ViewModels
         private readonly ICinemaService _cinemaService;
         private readonly IBackgroundLauncherService _backgroundLauncherService;
         private readonly ICineworldNavigationService _navigationService;
-        private readonly IUserPreferencesService _userPreferencesService;
         private readonly IToastService _toastService;
+        private readonly Func<FilmViewModel> _filmViewModelFactory;
 
         private bool _isLoading;
         private Cinema _selectedCinema;
@@ -61,17 +61,18 @@ namespace CineworldAlerter.ViewModels
             IBackgroundLauncherService backgroundLauncherService,
             ICineworldNavigationService navigationService,
             IUserPreferencesService userPreferencesService,
-            IToastService toastService)
+            IToastService toastService,
+            Func<FilmViewModel> filmViewModelFactory)
         {
             _filmService = filmService;
             _cinemaService = cinemaService;
             _backgroundLauncherService = backgroundLauncherService;
             _navigationService = navigationService;
-            _userPreferencesService = userPreferencesService;
             _toastService = toastService;
+            _filmViewModelFactory = filmViewModelFactory;
 
-            _userPreferencesService.UserPreferencesChanged -= UserPreferencesServiceOnUserPreferencesChanged;
-            _userPreferencesService.UserPreferencesChanged += UserPreferencesServiceOnUserPreferencesChanged;
+            userPreferencesService.UserPreferencesChanged -= UserPreferencesServiceOnUserPreferencesChanged;
+            userPreferencesService.UserPreferencesChanged += UserPreferencesServiceOnUserPreferencesChanged;
         }
 
         private void UserPreferencesServiceOnUserPreferencesChanged(object sender, EventArgs e)
@@ -107,7 +108,7 @@ namespace CineworldAlerter.ViewModels
             var films = await _filmService.GetLocalFilms();
             var filmViewModels = films
                 .Where(x => _toastService.CanFilmBeDisplayed(x))
-                .Select(x => new FilmViewModel(x));
+                .Select(x => _filmViewModelFactory().WithFilm(x));
 
             Films.AddRange(filmViewModels);
 

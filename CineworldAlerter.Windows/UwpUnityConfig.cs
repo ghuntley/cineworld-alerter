@@ -13,6 +13,7 @@ namespace CineworldAlerter
             container.RegisterInstance<INavigationService>(new NavigationService(), new ContainerControlledLifetimeManager());
             container.RegisterType<ICineworldNavigationService, CineworldNavigationService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IBackgroundLauncherService, BackgroundLauncherService>();
+            container.RegisterType<ILauncherService, LauncherService>();
         }
     }
 }
