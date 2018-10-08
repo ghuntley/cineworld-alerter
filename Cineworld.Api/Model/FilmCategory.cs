@@ -34,7 +34,7 @@ namespace Cineworld.Api.Model
         Superscreen,
         [Category(Code = "vip", DisplayName = "VIP")]
         Vip,
-        [Category(Code = "cinebabies", IsPeopleTypeScreening = true, DisplayName = "CineBabies")]
+        [Category(Code = "cinebabies", DisplayName = "CineBabies")]
         Cinebabies,
         [Category(Code = "tbc", DisplayName = "TBC", IsRating = true)]
         Tbc,

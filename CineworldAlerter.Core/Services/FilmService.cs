@@ -50,6 +50,8 @@ namespace CineworldAlerter.Core.Services
                 .Where(x => externalFilms.Any(y => y.FilmId == x.Code))
                 .ToList();
 
+            var localFilmsChanged = CorrectWeightingOfExistingFilms(existingLocalFilms, allFilms);
+
             var existingExternalFilms = externalFilms
                 .Where(x => localFilms.Any(y => y.Code == x.FilmId))
                 .ToList();
@@ -57,8 +59,6 @@ namespace CineworldAlerter.Core.Services
             var filmsToRemove = localFilms
                 .Where(x => existingLocalFilms.All(y => y.Code != x.Code))
                 .ToList();
-
-            var localFilmsChanged = false;
 
             if (filmsToRemove.Any())
             {
@@ -87,11 +87,30 @@ namespace CineworldAlerter.Core.Services
 
             if (localFilmsChanged)
             {
+                localFilms = localFilms.OrderBy(x => x.Weight).ToList();
                 await WriteFilmsToFile(FilmCacheFile, localFilms);
                 _filmCache.ClearCache();
             }
 
             await WriteFilmsToFile(AllFilmCacheFile, allFilms);
+        }
+
+        private static bool CorrectWeightingOfExistingFilms(
+            IEnumerable<FullFilm> existingLocalFilms,
+            IReadOnlyCollection<FullFilm> allFilms)
+        {
+            var listChanged = false;
+
+            foreach (var film in existingLocalFilms)
+            {
+                var externalFilm = allFilms.FirstOrDefault(x => x.Code == film.Code);
+                if (externalFilm == null || film.Weight == externalFilm.Weight) continue;
+
+                listChanged = true;
+                film.Weight = externalFilm.Weight;
+            }
+
+            return listChanged;
         }
 
         public async Task DeleteLocalFilms()
@@ -118,7 +137,7 @@ namespace CineworldAlerter.Core.Services
 
             var json = await _storageService.Local.ReadAllTextAsync(fileName);
             var filmList = JsonConvert.DeserializeObject<List<FullFilm>>(json);
-            return filmList ?? new List<FullFilm>();
+            return filmList.OrderBy(x => x.Weight).ToList();
         }
 
         private async Task WriteFilmsToFile(string file, IEnumerable<FullFilm> films)
