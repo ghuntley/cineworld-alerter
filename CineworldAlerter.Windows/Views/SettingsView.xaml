@@ -15,6 +15,11 @@
             <CheckBox Content="{x:Bind Name, Mode=OneWay}"
                       IsChecked="{x:Bind DontAlertMe, Mode=TwoWay}" />
         </DataTemplate>
+
+        <Style TargetType="ListView">
+            <Setter Property="SelectionMode" Value="None" />
+            <Setter Property="ItemTemplate" Value="{StaticResource FilmCategoryTemplate}" />
+        </Style>
     </Page.Resources>
 
     <RelativePanel>
@@ -45,20 +50,24 @@
                   Margin="12"
                   Header="Film Ratings"
                   IsEnabled="{x:Bind ViewModel.ShowMeEverything, Converter={StaticResource NegativeBooleanConverter}}"
-                  ItemTemplate="{StaticResource FilmCategoryTemplate}"
                   ItemsSource="{x:Bind ViewModel.FilmRatings}"
                   RelativePanel.AlignLeftWithPanel="True"
-                  RelativePanel.Below="CategoryDescription"
-                  SelectionMode="None" />
+                  RelativePanel.Below="CategoryDescription" />
 
         <ListView x:Name="People"
                   Margin="24,12"
                   Header="People-based screenings"
                   IsEnabled="{x:Bind ViewModel.ShowMeEverything, Converter={StaticResource NegativeBooleanConverter}}"
-                  ItemTemplate="{StaticResource FilmCategoryTemplate}"
                   ItemsSource="{x:Bind ViewModel.PersonBasedCategories}"
                   RelativePanel.Below="CategoryDescription"
-                  RelativePanel.RightOf="Ratings"
-                  SelectionMode="None" />
+                  RelativePanel.RightOf="Ratings" />
+
+        <ListView x:Name="Special"
+                  Margin="24,12"
+                  Header="Special one-off screenings"
+                  IsEnabled="{x:Bind ViewModel.ShowMeEverything, Converter={StaticResource NegativeBooleanConverter}}"
+                  ItemsSource="{x:Bind ViewModel.SpecialScreeningCategories}"
+                  RelativePanel.Below="CategoryDescription"
+                  RelativePanel.RightOf="People" />
     </RelativePanel>
 </local:CineworldViewBase>

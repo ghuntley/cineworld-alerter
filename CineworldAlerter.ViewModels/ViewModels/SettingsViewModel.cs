@@ -26,6 +26,9 @@ namespace CineworldAlerter.ViewModels
         public ObservableCollection<FilmCategoryViewModel> PersonBasedCategories { get; }
             = new ObservableCollection<FilmCategoryViewModel>();
 
+        public ObservableCollection<FilmCategoryViewModel> SpecialScreeningCategories { get; }
+            = new ObservableCollection<FilmCategoryViewModel>();
+
         public bool ShowMeEverything
         {
             get => _showMeEverything;
@@ -51,6 +54,7 @@ namespace CineworldAlerter.ViewModels
 
             ConfigureRatings(categories);
             ConfigurePeopleScreenings(categories);
+            ConfigureSpecialScreenings(categories);
 
             _showMeEverything = _userPreferencesService.AlertOnEverything;
             return Task.CompletedTask;
@@ -61,6 +65,9 @@ namespace CineworldAlerter.ViewModels
 
         private void ConfigurePeopleScreenings(IEnumerable<FilmCategory> categories)
             => ConfigureList(categories, PersonBasedCategories, category => category.IsPeopleTypeScreening());
+
+        private void ConfigureSpecialScreenings(IEnumerable<FilmCategory> categories)
+            => ConfigureList(categories, SpecialScreeningCategories, category => category.IsSpecialScreening());
 
         private void ConfigureList(
             IEnumerable<FilmCategory> categories, 
@@ -92,8 +99,13 @@ namespace CineworldAlerter.ViewModels
                 .Where(x => x.DontAlertMe)
                 .Select(x => x.FilmCategory);
 
+            var specialChanges = SpecialScreeningCategories
+                .Where(x => x.DontAlertMe)
+                .Select(x => x.FilmCategory);
+
             var allCategories = ratingsChanges
                 .Union(personChanges)
+                .Union(specialChanges)
                 .Distinct();
 
             _userPreferencesService.DontShowAlertsFor = allCategories;

@@ -38,7 +38,7 @@ namespace Cineworld.Api.Model
         Cinebabies,
         [Category(Code = "tbc", DisplayName = "TBC", IsRating = true)]
         Tbc,
-        [Category(Code = "unlimited-screening", DisplayName = "Unlimited Screening")]
+        [Category(Code = "unlimited-screening", DisplayName = "Unlimited Screening", IsSpecialScreening = true)]
         UnlimitedScreening,
         [Category(Code = "autism-friendly", DisplayName = "Autism Friendly", IsPeopleTypeScreening = true)]
         AutismFriendly,
@@ -46,7 +46,7 @@ namespace Cineworld.Api.Model
         DementiaFriendly,
         [Category(Code = "movies-for-juniors", IsPeopleTypeScreening = true, DisplayName = "Movies For Juniors")]
         MoviesForJuniors,
-        [Category(Code = "alternative-content", DisplayName = "Alternative Content")]
+        [Category(Code = "alternative-content", DisplayName = "Alternative Content", IsSpecialScreening = true)]
         AlternativeContent,
         [Category(Code = "screenx", DisplayName = "ScreenX")]
         ScreenX,
@@ -64,5 +64,6 @@ namespace Cineworld.Api.Model
         public bool IsRating { get; set; }
         public bool IsPeopleTypeScreening { get; set; }
         public string DisplayName { get; set; }
+        public bool IsSpecialScreening { get; set; }
     }
 }

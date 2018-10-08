@@ -20,6 +20,9 @@ namespace Cineworld.Api.Extensions
         public static bool IsPeopleTypeScreening(this FilmCategory category)
             => category.GetAttribute<CategoryAttribute>()?.IsPeopleTypeScreening ?? false;
 
+        public static bool IsSpecialScreening(this FilmCategory category)
+            => category.GetAttribute<CategoryAttribute>()?.IsSpecialScreening ?? false;
+
         private static TAttribute GetAttribute<TAttribute>(this object obj)
             where TAttribute : Attribute
         {
