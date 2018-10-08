@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Cimbalino.Toolkit.Extensions;
@@ -18,6 +19,7 @@ namespace CineworldAlerter.ViewModels
         private readonly ICinemaService _cinemaService;
         private readonly IBackgroundLauncherService _backgroundLauncherService;
         private readonly ICineworldNavigationService _navigationService;
+        private readonly IUserPreferencesService _userPreferencesService;
 
         private bool _isLoading;
         private Cinema _selectedCinema;
@@ -56,13 +58,21 @@ namespace CineworldAlerter.ViewModels
             IFilmService filmService,
             ICinemaService cinemaService,
             IBackgroundLauncherService backgroundLauncherService,
-            ICineworldNavigationService navigationService)
+            ICineworldNavigationService navigationService,
+            IUserPreferencesService userPreferencesService)
         {
             _filmService = filmService;
             _cinemaService = cinemaService;
             _backgroundLauncherService = backgroundLauncherService;
             _navigationService = navigationService;
+            _userPreferencesService = userPreferencesService;
+
+            _userPreferencesService.UserPreferencesChanged -= UserPreferencesServiceOnUserPreferencesChanged;
+            _userPreferencesService.UserPreferencesChanged += UserPreferencesServiceOnUserPreferencesChanged;
         }
+
+        private void UserPreferencesServiceOnUserPreferencesChanged(object sender, EventArgs e)
+            => LoadData(true).DontAwait();
 
         public async Task OnNavigatedToAsync(NavigationServiceNavigationEventArgs eventArgs)
         {

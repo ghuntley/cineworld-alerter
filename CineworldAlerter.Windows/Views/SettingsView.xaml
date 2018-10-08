@@ -37,8 +37,15 @@
                       RelativePanel.AlignLeftWithPanel="True"
                       RelativePanel.Below="SettingsTitle" />
 
+        <ToggleSwitch x:Name="FilterAppliesToApp"
+                      Margin="12,0"
+                      Header="Apply these restrictions to what is displayed in the app"
+                      IsOn="{x:Bind ViewModel.FilterAppliesToApp, Mode=TwoWay}"
+                      RelativePanel.Below="SettingsTitle"
+                      RelativePanel.RightOf="ShowAllNotifications" />
+
         <TextBlock x:Name="CategoryDescription"
-                   Margin="12,0"
+                   Margin="12,12,12,0"
                    RelativePanel.AlignLeftWithPanel="True"
                    RelativePanel.Below="ShowAllNotifications">
             <Run Text="Please only tick the items that you do" />

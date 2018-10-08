@@ -19,6 +19,7 @@ namespace CineworldAlerter.ViewModels
         private readonly IUserPreferencesService _userPreferencesService;
 
         private bool _showMeEverything;
+        private bool _filterAppliesToApp;
 
         public ObservableCollection<FilmCategoryViewModel> FilmRatings { get; }
             = new ObservableCollection<FilmCategoryViewModel>();
@@ -36,6 +37,16 @@ namespace CineworldAlerter.ViewModels
             {
                 if (Set(ref _showMeEverything, value))
                     _userPreferencesService.AlertOnEverything = value;
+            }
+        }
+
+        public bool FilterAppliesToApp
+        {
+            get => _filterAppliesToApp;
+            set
+            {
+                if (Set(ref _filterAppliesToApp, value))
+                    _userPreferencesService.NotificationsFilterAppliesToList = value;
             }
         }
 
