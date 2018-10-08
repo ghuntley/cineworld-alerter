@@ -20,6 +20,7 @@ namespace CineworldAlerter.ViewModels
         private readonly IBackgroundLauncherService _backgroundLauncherService;
         private readonly ICineworldNavigationService _navigationService;
         private readonly IUserPreferencesService _userPreferencesService;
+        private readonly IToastService _toastService;
 
         private bool _isLoading;
         private Cinema _selectedCinema;
@@ -59,13 +60,15 @@ namespace CineworldAlerter.ViewModels
             ICinemaService cinemaService,
             IBackgroundLauncherService backgroundLauncherService,
             ICineworldNavigationService navigationService,
-            IUserPreferencesService userPreferencesService)
+            IUserPreferencesService userPreferencesService,
+            IToastService toastService)
         {
             _filmService = filmService;
             _cinemaService = cinemaService;
             _backgroundLauncherService = backgroundLauncherService;
             _navigationService = navigationService;
             _userPreferencesService = userPreferencesService;
+            _toastService = toastService;
 
             _userPreferencesService.UserPreferencesChanged -= UserPreferencesServiceOnUserPreferencesChanged;
             _userPreferencesService.UserPreferencesChanged += UserPreferencesServiceOnUserPreferencesChanged;
@@ -102,7 +105,9 @@ namespace CineworldAlerter.ViewModels
             await _filmService.RefreshFilms(_cinemaService.CurrentCinema.Id);
 
             var films = await _filmService.GetLocalFilms();
-            var filmViewModels = films.Select(x => new FilmViewModel(x));
+            var filmViewModels = films
+                .Where(x => _toastService.CanFilmBeDisplayed(x))
+                .Select(x => new FilmViewModel(x));
 
             Films.AddRange(filmViewModels);
 

@@ -34,6 +34,8 @@
         <GridView x:Name="FilmsList"
                   ItemsSource="{x:Bind ViewModel.Films}"
                   RelativePanel.Above="CommandBar"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.Below="CinemaTitle"
                   SelectionMode="None">
             <GridView.ItemTemplate>

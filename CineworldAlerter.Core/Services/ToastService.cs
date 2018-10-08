@@ -26,15 +26,21 @@ namespace CineworldAlerter.Core.Services
             {
                 foreach (var film in films)
                 {
-                    if (!ShowToastForFilm(film))
+                    if (!CanFilmBeDisplayedInternal(true, film))
                         continue;
 
                     _toastProxyService.ShowToast(film, film.IsUnlimitedScreening());
                 }
             });
 
-        private bool ShowToastForFilm(FullFilm film)
+        public bool CanFilmBeDisplayed(FullFilm film)
+            => CanFilmBeDisplayedInternal(false, film);
+
+        private bool CanFilmBeDisplayedInternal(bool isForToast, FullFilm film)
         {
+            if (!isForToast && !_userPreferencesService.NotificationsFilterAppliesToList)
+                return true;
+
             if (_userPreferencesService.AlertOnEverything
                 || _userPreferencesService.DontShowAlertsFor.IsNullOrEmpty()
                 || film.Attributes.IsNullOrEmpty())
