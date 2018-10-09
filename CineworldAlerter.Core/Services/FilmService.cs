@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cimbalino.Toolkit.Services;
+﻿using Cimbalino.Toolkit.Services;
 using Cineworld.Api;
 using Cineworld.Api.Model;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CineworldAlerter.Core.Extensions;
 
 namespace CineworldAlerter.Core.Services
 {
@@ -12,6 +13,7 @@ namespace CineworldAlerter.Core.Services
     {
         public const string FilmCacheFile = "CinemaFilmCache.json";
         public const string AllFilmCacheFile = "AllFilmsCache.json";
+        public const string UnlimitedScreeningsCacheFile = "UnlimitedScreenings.json";
 
         private readonly IApiClient _apiClient;
         private readonly ICachingService<string, List<FullFilm>> _filmCache;
@@ -32,7 +34,7 @@ namespace CineworldAlerter.Core.Services
             _filmCache.Initialise(LoadFilmsFromFile);
         }
 
-        public Task<List<FullFilm>> GetLocalFilms() 
+        public Task<List<FullFilm>> GetLocalFilms()
             => _filmCache.Get(FilmCacheFile);
 
         public Task<List<FullFilm>> GetAllFilms()
@@ -43,6 +45,8 @@ namespace CineworldAlerter.Core.Services
             var externalFilms = await _apiClient.GetFilmsForCinema(cinemaId);
             var localFilms = await GetLocalFilms();
             var allFilms = await _apiClient.GetAllFilms();
+
+            CheckForUnlimitedScreenings().DontAwait();
 
             var isFirstRun = !localFilms.Any();
 
@@ -65,7 +69,7 @@ namespace CineworldAlerter.Core.Services
                 RemoveFilms(localFilms, filmsToRemove);
                 localFilmsChanged = true;
             }
-            
+
             var addedExternalFilms = externalFilms
                 .Except(existingExternalFilms)
                 .ToList();
@@ -89,7 +93,7 @@ namespace CineworldAlerter.Core.Services
             {
                 localFilms = localFilms.OrderBy(x => x.Weight).ToList();
                 await WriteFilmsToFile(FilmCacheFile, localFilms);
-                _filmCache.ClearCache();
+                _filmCache.ClearCache(FilmCacheFile);
             }
 
             await WriteFilmsToFile(AllFilmCacheFile, allFilms);
@@ -122,8 +126,57 @@ namespace CineworldAlerter.Core.Services
             _filmCache.ClearCache(FilmCacheFile);
         }
 
-        private void RemoveFilms(
-            ICollection<FullFilm> localFilms, 
+        public async Task CheckForUnlimitedScreenings()
+        {
+            var externalUnlimitedFilms = await _apiClient.SearchUnlimitedFilms();
+            var localUnlimitedFilms = await _filmCache.Get(UnlimitedScreeningsCacheFile);
+
+            var isFirstRun = !localUnlimitedFilms.Any();
+
+            var existingLocalFilms = localUnlimitedFilms
+                .Where(x => externalUnlimitedFilms.Any(y => y.FeatureTitle == x.FeatureTitle))
+                .ToList();
+
+            var existingExternalFilms = externalUnlimitedFilms
+                .Where(x => localUnlimitedFilms.Any(y => y.FeatureTitle == x.FeatureTitle))
+                .ToList();
+
+            var filmsToRemove = localUnlimitedFilms
+                .Where(x => existingLocalFilms.All(y => y.FeatureTitle != x.FeatureTitle))
+                .ToList();
+
+            var localFileChanged = false;
+
+            if (filmsToRemove.Any())
+            {
+                RemoveFilms(localUnlimitedFilms, filmsToRemove);
+                localFileChanged = true;
+            }
+
+            var addedExternalFilms = externalUnlimitedFilms
+                .Except(existingExternalFilms)
+                .ToList();
+
+            if (addedExternalFilms.Any())
+            {
+                if (!isFirstRun)
+                {
+                    await _toastService.AnnounceUnlimitedScreenings(addedExternalFilms);
+                }
+
+                localUnlimitedFilms.AddRange(addedExternalFilms);
+                localFileChanged = true;
+            }
+
+            if (localFileChanged)
+            {
+                await WriteFilmsToFile(UnlimitedScreeningsCacheFile, localUnlimitedFilms);
+                _filmCache.ClearCache(UnlimitedScreeningsCacheFile);
+            }
+        }
+
+        private static void RemoveFilms(
+            ICollection<FullFilm> localFilms,
             IEnumerable<FullFilm> filmsToRemove)
         {
             foreach (var film in filmsToRemove)
@@ -132,12 +185,12 @@ namespace CineworldAlerter.Core.Services
 
         private async Task<List<FullFilm>> LoadFilmsFromFile(string fileName)
         {
-            if(!await _storageService.Local.FileExistsAsync(fileName))
+            if (!await _storageService.Local.FileExistsAsync(fileName))
                 return new List<FullFilm>();
 
             var json = await _storageService.Local.ReadAllTextAsync(fileName);
             var filmList = JsonConvert.DeserializeObject<List<FullFilm>>(json);
-            return filmList.OrderBy(x => x.Weight).ToList();
+            return filmList?.OrderBy(x => x.Weight).ToList() ?? new List<FullFilm>();
         }
 
         private async Task WriteFilmsToFile(string file, IEnumerable<FullFilm> films)

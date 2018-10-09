@@ -18,11 +18,11 @@
                    Text="{x:Bind ViewModel.CinemaName, Mode=OneWay}" />
 
         <HyperlinkButton x:Name="ChangeCinemaButton"
-                         Margin="6,0"
+                         Margin="6,12"
                          Click="ChangeCinemaButton_OnClick"
                          Content="Change"
                          FontSize="10"
-                         RelativePanel.AlignVerticalCenterWith="CinemaTitle"
+                         RelativePanel.AlignBottomWith="CinemaTitle"
                          RelativePanel.RightOf="CinemaTitle">
             <FlyoutBase.AttachedFlyout>
                 <ListPickerFlyout DisplayMemberPath="DisplayName"
@@ -38,6 +38,12 @@
                   RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.Below="CinemaTitle"
                   SelectionMode="None">
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Height" Value="260" />
+                    <Setter Property="VerticalContentAlignment" Value="Top" />
+                </Style>
+            </GridView.ItemContainerStyle>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="entities:FilmViewModel">
                     <Button Click="{x:Bind LaunchBooking}"
@@ -46,6 +52,7 @@
                             <Image x:Name="Poster"
                                    Height="200"
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
                                    Source="{x:Bind ImageUrl, Mode=OneWay}"
                                    ToolTipService.ToolTip="{x:Bind Name, Mode=OneWay}" />
                             <TextBlock FontSize="12"

@@ -101,6 +101,12 @@ namespace CineworldAlerter.Windows.Core.SampleData
         public Task<List<FullFilm>> GetAllFilms(CancellationToken cancellationToken = default(CancellationToken)) 
             => Task.FromResult(_allFilms);
 
+        public Task<List<FullFilm>> SearchUnlimitedFilms(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var randomItems = PickRandom(_allFilms);
+            return Task.FromResult(randomItems.ToList());
+        }
+
         public static IEnumerable<T> PickRandom<T>(IEnumerable<T> source) 
             => PickRandom(source, 2);
 

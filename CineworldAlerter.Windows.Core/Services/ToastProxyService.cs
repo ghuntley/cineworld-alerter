@@ -30,6 +30,41 @@ namespace CineworldAlerter.Windows.Core.Services
             ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
+        public void AnnounceUnlimitedScreening(FullFilm film)
+        {
+            var alarmEmoji = char.ConvertFromUtf32(0x1F6A8);
+            var toastContent = new ToastContent
+            {
+                Visual = new ToastVisual
+                {
+                    BindingGeneric = new ToastBindingGeneric
+                    {
+                        AppLogoOverride = new ToastGenericAppLogo
+                        {
+                            Source = "ms-appx:///Assets/StoreLogo.png",
+                            HintCrop = ToastGenericAppLogoCrop.Circle
+                        },
+                        Children =
+                        {
+                            new AdaptiveText
+                            {
+                                Text = $"{alarmEmoji} NEW UNLIMITED SCREENING {alarmEmoji}",
+                                HintStyle = AdaptiveTextStyle.Title
+                            },
+                            new AdaptiveText
+                            {
+                                Text = film.FeatureTitle,
+                                HintWrap = true
+                            }
+                        }
+                    }
+                }
+            };
+
+            var toast = new ToastNotification(toastContent.GetXml());
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+        }
+
         private ToastContent CreateToastContent(FullFilm film)
             => new ToastContent
             {

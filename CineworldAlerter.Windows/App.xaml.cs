@@ -1,8 +1,13 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.Foundation.Metadata;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using CineworldAlerter.Core;
 using CineworldAlerter.ViewModels;
@@ -67,6 +72,26 @@ namespace CineworldAlerter
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+            }
+
+            SetTitleBar();
+        }
+
+        private void SetTitleBar()
+        {
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
+            {
+                var appView = ApplicationView.GetForCurrentView();
+
+                var backgroundColor = Colors.Black;
+                appView.TitleBar.BackgroundColor =
+                    appView.TitleBar.ButtonBackgroundColor =
+                        appView.TitleBar.InactiveBackgroundColor = appView.TitleBar.ButtonInactiveBackgroundColor = backgroundColor;
+                appView.TitleBar.ForegroundColor = appView.TitleBar.ButtonForegroundColor = Colors.White;
+                appView.TitleBar.InactiveForegroundColor =
+                    appView.TitleBar.ButtonInactiveForegroundColor = Color.FromArgb(255, 192, 192, 192);
+                appView.TitleBar.ButtonHoverBackgroundColor = Colors.Gray;
+                appView.TitleBar.ButtonPressedBackgroundColor = Colors.DarkGray;
             }
         }
 
