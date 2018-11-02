@@ -46,7 +46,7 @@ namespace CineworldAlerter.Core.Services
             var localFilms = await GetLocalFilms();
             var allFilms = await _apiClient.GetAllFilms();
 
-            CheckForUnlimitedScreenings().DontAwait();
+            await CheckForUnlimitedScreenings();
 
             var isFirstRun = !localFilms.Any();
 
