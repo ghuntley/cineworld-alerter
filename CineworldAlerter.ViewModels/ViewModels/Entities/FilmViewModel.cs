@@ -20,6 +20,10 @@ namespace CineworldAlerter.ViewModels.Entities
 
         public string Name => _film.FeatureTitle;
 
+        public string ReleaseDate => _film.DateStarted?.ToString("D");
+
+        public string Tooltip => $"{Name}\n\nReleased: {ReleaseDate}";
+
         public void LaunchBooking()
             => _launcherService.LaunchUriAsync(_film.Url.ToCineworldLink());
 

@@ -54,7 +54,7 @@
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"
                                    Source="{x:Bind ImageUrl, Mode=OneWay}"
-                                   ToolTipService.ToolTip="{x:Bind Name, Mode=OneWay}" />
+                                   ToolTipService.ToolTip="{x:Bind Tooltip, Mode=OneWay}" />
                             <TextBlock FontSize="12"
                                        RelativePanel.AlignLeftWithPanel="True"
                                        RelativePanel.AlignRightWithPanel="True"
