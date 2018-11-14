@@ -41,6 +41,7 @@
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
                     <Setter Property="Height" Value="260" />
+                    <Setter Property="MaxWidth" Value="140" />
                     <Setter Property="VerticalContentAlignment" Value="Top" />
                 </Style>
             </GridView.ItemContainerStyle>
