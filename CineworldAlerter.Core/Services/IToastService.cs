@@ -13,7 +13,7 @@ namespace CineworldAlerter.Core.Services
 
     public interface IToastProxyService
     {
-        void ShowToast(FullFilm film, bool isUnlimitedScreening);
-        void AnnounceUnlimitedScreening(FullFilm film);
+        Task ShowToast(FullFilm film, bool isUnlimitedScreening);
+        Task AnnounceUnlimitedScreening(FullFilm film);
     }
 }

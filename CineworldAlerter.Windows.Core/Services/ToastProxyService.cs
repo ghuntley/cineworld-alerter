@@ -1,23 +1,36 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.UI.Notifications;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Extensions;
 using CineworldAlerter.Core.Services;
 using Microsoft.Toolkit.Uwp.Notifications;
+using NPushover;
+using NPushover.RequestObjects;
 
 namespace CineworldAlerter.Windows.Core.Services
 {
     public class ToastProxyService : IToastProxyService
     {
-        public void ShowToast(FullFilm film, bool isUnlimitedScreening)
+        private const string PushoverApplicationKey = "atiogafo5byddobdgs9vbs41kipna6";
+        private const string CineworldGroupKey = "gzt7w8ou94n7vmco4ujkwjhcssysj5";
+
+        private readonly Pushover _pushoverClient;
+
+        public ToastProxyService()
+            => _pushoverClient = new Pushover(PushoverApplicationKey);
+
+        public async Task ShowToast(FullFilm film, bool isUnlimitedScreening)
         {
-            var toastContent = CreateToastContent(film);
+            var toastContent = CreateToastContent(film, out var message);
+            var body = string.Empty;
 
             if (isUnlimitedScreening && film.DateStarted.HasValue)
             {
+                body = $"Screening is on {film.DateStarted:dddd MMMM dd}";
                 toastContent.Visual.BindingGeneric.Children.Add(new AdaptiveText
                 {
-                    Text = $"Screening is on {film.DateStarted:dddd MMMM dd}",
+                    Text = body,
                     HintWrap = true
                 });
             }
@@ -28,11 +41,14 @@ namespace CineworldAlerter.Windows.Core.Services
             };
 
             ToastNotificationManager.CreateToastNotifier().Show(toast);
+
+            await SendPushNotification(message, body);
         }
 
-        public void AnnounceUnlimitedScreening(FullFilm film)
+        public async Task AnnounceUnlimitedScreening(FullFilm film)
         {
             var alarmEmoji = char.ConvertFromUtf32(0x1F6A8);
+            var message = $"{alarmEmoji} NEW UNLIMITED SCREENING {alarmEmoji}";
             var toastContent = new ToastContent
             {
                 Visual = new ToastVisual
@@ -48,7 +64,7 @@ namespace CineworldAlerter.Windows.Core.Services
                         {
                             new AdaptiveText
                             {
-                                Text = $"{alarmEmoji} NEW UNLIMITED SCREENING {alarmEmoji}",
+                                Text = message,
                                 HintStyle = AdaptiveTextStyle.Title
                             },
                             new AdaptiveText
@@ -63,10 +79,20 @@ namespace CineworldAlerter.Windows.Core.Services
 
             var toast = new ToastNotification(toastContent.GetXml());
             ToastNotificationManager.CreateToastNotifier().Show(toast);
+
+            await SendPushNotification(message);
         }
 
-        private ToastContent CreateToastContent(FullFilm film)
-            => new ToastContent
+        private Task SendPushNotification(string title, string body = null)
+        {
+            var pushoverMessage = Message.Create(Priority.Normal, title, body, false, Sounds.Siren);
+            return _pushoverClient.SendMessageAsync(pushoverMessage, CineworldGroupKey);
+        }
+
+        private ToastContent CreateToastContent(FullFilm film, out string message)
+        {
+            message = $"{film.FeatureTitle} is now available to book online.";
+            return new ToastContent
             {
                 Visual = new ToastVisual
                 {
@@ -86,7 +112,7 @@ namespace CineworldAlerter.Windows.Core.Services
                             },
                             new AdaptiveText
                             {
-                                Text = $"{film.FeatureTitle} is now available to book online.",
+                                Text = message,
                                 HintWrap = true
                             },
                         }
@@ -103,5 +129,6 @@ namespace CineworldAlerter.Windows.Core.Services
                     }
                 }
             };
+        }
     }
 }

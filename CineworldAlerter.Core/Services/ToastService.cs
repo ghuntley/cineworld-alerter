@@ -22,23 +22,23 @@ namespace CineworldAlerter.Core.Services
         }
 
         public Task DisplayToasts(IEnumerable<FullFilm> films)
-            => Task.Run(() =>
+            => Task.Run(async () =>
             {
                 foreach (var film in films)
                 {
                     if (!CanFilmBeDisplayedInternal(true, film))
                         continue;
 
-                    _toastProxyService.ShowToast(film, film.IsUnlimitedScreening());
+                    await _toastProxyService.ShowToast(film, film.IsUnlimitedScreening());
                 }
             });
 
         public Task AnnounceUnlimitedScreenings(IEnumerable<FullFilm> films)
-            => Task.Run(() =>
+            => Task.Run(async () =>
             {
                 foreach (var film in films)
                 {
-                    _toastProxyService.AnnounceUnlimitedScreening(film);
+                    await _toastProxyService.AnnounceUnlimitedScreening(film);
                 }
             });
 
