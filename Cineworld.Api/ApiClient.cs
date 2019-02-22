@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using Cineworld.Api.Extensions;
 using Cineworld.Api.Model;
 using Newtonsoft.Json;
 
@@ -17,6 +18,8 @@ namespace Cineworld.Api
         private const string AllFilmsEndPoint = "poster/10108/by-showing-type/SHOWING?lang=en_GB&ordering=desc";
         private const string FilmsByCinemaEndPoint = "10108/trailers/byCinemaId/{0}";
         private const string AllCinemasEndPoint = "quickbook/10108/cinemas/with-event/until/{0}?attr=&lang=en_GB"; // {0} is DateTime.Now.Date.AddYear(1);
+        private const string FilmScreeningDatesEndPoint = "quickbook/10108/dates/in-group/{0}/with-film/{1}/until/{2}?attr=&lang=en_GB"; // {0} = cinema name (eg, poole), {1} = film id (eg, ho00005103), {2} = Date 1 year from now (eg, 2020-02-21)
+        private const string BookingsEndPoint = "quickbook/10108/cinema-events/in-group/{0}/with-film/{1}/at-date/{2}?attr=&lang=en_GB"; // {0} = cinema name (eg, poole), {1} = film id (eg, ho00005103), {2} = Date for performances (eg, 2019-02-21)
 
         private readonly HttpClient _httpClient;
 
@@ -30,7 +33,7 @@ namespace Cineworld.Api
 
         public async Task<List<Cinema>> GetCinemas(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var endPoint = string.Format(AllCinemasEndPoint, DateTimeOffset.Now.Date.AddYears(1).ToString("yyyy-MM-dd"));
+            var endPoint = string.Format(AllCinemasEndPoint, GetOneYearFromNow());
             var response = await Get<CinemaResponse>(endPoint, cancellationToken);
 
             return response?.Body?.Cinemas ?? new List<Cinema>();
@@ -81,6 +84,27 @@ namespace Cineworld.Api
             return result;
         }
 
+        public async Task<List<DateTimeOffset>> GetDatesForFilmsByCinema(
+            string cinemaName,
+            string filmId,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var endPoint = string.Format(FilmScreeningDatesEndPoint, cinemaName.CleanName(), filmId, GetOneYearFromNow());
+
+            var response = await Get<FilmDatesResponse>(endPoint, cancellationToken);
+
+            return response?.Body?.Dates ?? new List<DateTimeOffset>();
+        }
+
+        public async Task<List<Booking>> GetBookings(string cinemaName, string filmId, DateTimeOffset screeningDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var endPoint = string.Format(BookingsEndPoint, cinemaName, filmId, screeningDate.ToCineworldDate());
+
+            var response = await Get<BookingsResponse>(endPoint, cancellationToken);
+
+            return response?.Body?.Bookings ?? new List<Booking>();
+        }
+
         private async Task<TResult> Get<TResult>(
             string endPoint,
             CancellationToken cancellationToken)
@@ -98,5 +122,8 @@ namespace Cineworld.Api
 
             return result;
         }
+
+        private static string GetOneYearFromNow()
+            => DateTimeOffset.Now.Date.AddYears(1).ToCineworldDate();
     }
 }

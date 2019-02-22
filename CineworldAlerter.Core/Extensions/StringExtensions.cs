@@ -1,4 +1,6 @@
-﻿namespace CineworldAlerter.Core.Extensions
+﻿using System;
+
+namespace CineworldAlerter.Core.Extensions
 {
     public static class StringExtensions
     {
