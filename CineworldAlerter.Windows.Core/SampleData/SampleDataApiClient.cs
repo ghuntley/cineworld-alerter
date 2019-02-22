@@ -107,6 +107,16 @@ namespace CineworldAlerter.Windows.Core.SampleData
             return Task.FromResult(randomItems.ToList());
         }
 
+        public Task<List<DateTimeOffset>> GetDatesForFilmsByCinema(string cinemaName, string filmId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Booking>> GetBookings(string cinemaName, string filmId, DateTimeOffset screeningDate, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new NotImplementedException();
+        }
+
         public static IEnumerable<T> PickRandom<T>(IEnumerable<T> source) 
             => PickRandom(source, 2);
 

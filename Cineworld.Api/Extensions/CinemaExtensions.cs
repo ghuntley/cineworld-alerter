@@ -15,12 +15,12 @@ namespace Cineworld.Api.Extensions
         }
     }
 
-    internal static class DateExtensions
+    public static class DateExtensions
     {
-        internal static string ToCineworldDate(this DateTimeOffset date)
+        public static string ToCineworldDate(this DateTimeOffset date)
             => date.Date.ToCineworldDate();
 
-        internal static string ToCineworldDate(this DateTime date)
+        public static string ToCineworldDate(this DateTime date)
             => date.ToString("yyyy-MM-dd");
     }
 }
