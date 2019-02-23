@@ -108,7 +108,11 @@ namespace CineworldAlerter.Core.Services
             foreach (var film in existingLocalFilms)
             {
                 var externalFilm = allFilms.FirstOrDefault(x => x.Code == film.Code);
-                if (externalFilm == null || film.Weight == externalFilm.Weight) continue;
+                if (externalFilm == null || film.Weight == externalFilm.Weight)
+                {
+                    film.FilmLength = externalFilm?.FilmLength ?? 0;
+                    continue;
+                }
 
                 listChanged = true;
                 film.Weight = externalFilm.Weight;

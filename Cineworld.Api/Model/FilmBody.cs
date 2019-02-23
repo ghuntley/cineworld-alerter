@@ -7,5 +7,8 @@ namespace Cineworld.Api.Model
     {
         [JsonProperty("posters")]
         public List<FullFilm> Films{ get; set; }
+
+        [JsonProperty("films")]
+        public List<FullFilm> Films2 { get; set; }
     }
 }

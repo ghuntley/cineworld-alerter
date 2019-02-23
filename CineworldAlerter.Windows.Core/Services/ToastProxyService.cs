@@ -86,7 +86,6 @@ namespace CineworldAlerter.Windows.Core.Services
 
         private Task SendPushNotification(string title, string body = "", string linkMessage = null, string url = null)
         {
-            return Task.CompletedTask;
             try
             {
                 var pushoverMessage = string.IsNullOrEmpty(body)

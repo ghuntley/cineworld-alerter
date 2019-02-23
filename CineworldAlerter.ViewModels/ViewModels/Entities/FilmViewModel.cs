@@ -1,20 +1,15 @@
-﻿using System.Threading.Tasks;
-using Cimbalino.Toolkit.Services;
+﻿using System.Linq;
+using Cineworld.Api.Extensions;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Extensions;
+using CineworldAlerter.Messages;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace CineworldAlerter.ViewModels.Entities
 {
     public class FilmViewModel
     {
-        private FullFilm _film;
-        private readonly ILauncherService _launcherService;
-
-        public FilmViewModel(
-            ILauncherService launcherService)
-        {
-            _launcherService = launcherService;
-        }
+        private readonly FullFilm _film;
 
         public string ImageUrl => _film.PosterSrc.ToCineworldLink();
 
@@ -24,13 +19,32 @@ namespace CineworldAlerter.ViewModels.Entities
 
         public string Tooltip => $"{Name}\n\nReleased: {ReleaseDate}";
 
-        public void LaunchBooking()
-            => _launcherService.LaunchUriAsync(_film.Url.ToCineworldLink());
+        public string RatingImageUrl => $"/xmedia/img/10108/rating/{GetFilmCode()}.png".ToCineworldLink();
 
-        public FilmViewModel WithFilm(FullFilm film)
+        public string RunTime
+        {
+            get
+            {
+                var runtime = _film.FilmLength;
+                if (runtime <= 0)
+                    return null;
+
+                return $"Runtime: {runtime} minutes";
+            }
+        }
+
+        public FilmViewModel(FullFilm film)
         {
             _film = film;
-            return this;
         }
+
+        public void LaunchBooking()
+            => Messenger.Default.Send(new FilmChangedMessage(_film));
+
+        private string GetFilmCode()
+            => _film.Attributes
+                .FirstOrDefault(x => x.IsRating())
+                .GetCode()
+                .ToUpperInvariant();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace Cineworld.Api
         private const string BaseUrl = "https://www.cineworld.co.uk/uk/data-api-service/v1/";
         private const string UnlimitedSearchUrl = "https://www.cineworld.co.uk/q?live=1&q=unlimited";
         private const string AllFilmsEndPoint = "poster/10108/by-showing-type/SHOWING?lang=en_GB&ordering=desc";
+        private const string AllFilms2EndPoint = "quickbook/10108/films/until/{0}?attr=&lang=en_GB"; // {1} = Date 1 year from now (eg, 2020-02-21)
         private const string FilmsByCinemaEndPoint = "10108/trailers/byCinemaId/{0}";
         private const string AllCinemasEndPoint = "quickbook/10108/cinemas/with-event/until/{0}?attr=&lang=en_GB"; // {0} is DateTime.Now.Date.AddYear(1);
         private const string FilmScreeningDatesEndPoint = "quickbook/10108/dates/in-group/{0}/with-film/{1}/until/{2}?attr=&lang=en_GB"; // {0} = cinema name (eg, poole), {1} = film id (eg, ho00005103), {2} = Date 1 year from now (eg, 2020-02-21)
@@ -51,8 +53,22 @@ namespace Cineworld.Api
         public async Task<List<FullFilm>> GetAllFilms(CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = await Get<FullFilmResponse>(AllFilmsEndPoint, cancellationToken);
+            var response2 = await Get<FullFilmResponse>(string.Format(AllFilms2EndPoint, GetOneYearFromNow()), cancellationToken);
 
-            return response?.Body?.Films ?? new List<FullFilm>();
+            if(response?.Body?.Films == null || response2?.Body?.Films2 == null)
+                return new List<FullFilm>();
+
+            foreach (var film in response.Body.Films)
+            {
+                var film2 = response2.Body.Films2.FirstOrDefault(x => x.Id == film.Code);
+                if (film2 == null)
+                    continue;
+
+                film.FilmLength = film2.FilmLength;
+                film.Id = film2.Id;
+            }
+
+            return response.Body.Films;
         }
 
         public async Task<List<FullFilm>> SearchUnlimitedFilms(CancellationToken cancellationToken = default(CancellationToken))
