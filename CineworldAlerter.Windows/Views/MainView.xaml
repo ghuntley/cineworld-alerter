@@ -126,13 +126,14 @@
                 x:Name="LightDismissBorder"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                PointerReleased="UIElement_OnPointerReleased">
+                PointerReleased="BackgroundBorder_OnPointerReleased">
                 <Border.Background>
                     <SolidColorBrush
                         Opacity="0.5"
                         Color="Black" />
                 </Border.Background>
                 <Grid
+                    x:Name="PopupContent"
                     Margin="100"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -168,10 +169,17 @@
                             Source="{x:Bind BookingsViewModel.SelectedFilm.RatingImageUrl, Mode=OneWay}" />
 
                         <TextBlock
+                            x:Name="FilmDetailRuntime"
                             Margin="12"
                             RelativePanel.Below="FilmDetailTitle"
                             RelativePanel.RightOf="FilmDetailPoster"
                             Text="{x:Bind BookingsViewModel.SelectedFilm.RunTime, Mode=OneWay}" />
+
+                        <TextBlock
+                            Margin="12,0"
+                            RelativePanel.Below="FilmDetailRuntime"
+                            RelativePanel.RightOf="FilmDetailPoster"
+                            Text="{x:Bind BookingsViewModel.SelectedFilm.ReleaseDateLong, Mode=OneWay}" />
                     </RelativePanel>
 
 

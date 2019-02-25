@@ -40,8 +40,19 @@ namespace CineworldAlerter.Views
             FlyoutBase.ShowAttachedFlyout(ChangeCinemaButton);
         }
 
-        private void UIElement_OnPointerReleased(object sender, PointerRoutedEventArgs e)
+        private void BackgroundBorder_OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
+            var point = e.GetCurrentPoint(PopupContent);
+            var position = point.RawPosition;
+            var bounds = Window.Current.Bounds;
+
+            if (position.X >= 100 &&
+                position.X <= bounds.Width - 100 &&
+                position.Y >= 100 &&
+                position.Y <= bounds.Height - 100)
+                return;
+
+
             BookingsPopup.IsOpen = false;
         }
 

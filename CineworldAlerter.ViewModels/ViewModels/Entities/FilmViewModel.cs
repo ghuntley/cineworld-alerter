@@ -33,6 +33,18 @@ namespace CineworldAlerter.ViewModels.Entities
             }
         }
 
+        public string ReleaseDateLong
+        {
+            get
+            {
+                var date = _film.DateStarted;
+                if (!date.HasValue)
+                    return null;
+
+                return $"Release date: {date.Value:dddd dd MMMM}";
+            }
+        }
+
         public FilmViewModel(FullFilm film)
         {
             _film = film;
