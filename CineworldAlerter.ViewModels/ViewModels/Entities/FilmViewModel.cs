@@ -45,13 +45,14 @@ namespace CineworldAlerter.ViewModels.Entities
             }
         }
 
-        public FilmViewModel(FullFilm film)
-        {
-            _film = film;
-        }
+        public FilmViewModel(FullFilm film) 
+            => _film = film;
 
         public void LaunchBooking()
             => Messenger.Default.Send(new FilmChangedMessage(_film));
+
+        public void ViewFilmOnWebsite()
+            => Messenger.Default.Send(new NotificationMessage(_film.Url.ToCineworldLink()));
 
         private string GetFilmCode()
             => _film.Attributes

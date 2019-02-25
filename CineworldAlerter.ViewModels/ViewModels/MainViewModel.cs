@@ -10,6 +10,7 @@ using CineworldAlerter.Core.Extensions;
 using CineworldAlerter.Core.Services;
 using CineworldAlerter.ViewModels.Entities;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace CineworldAlerter.ViewModels
 {
@@ -60,7 +61,8 @@ namespace CineworldAlerter.ViewModels
             IBackgroundLauncherService backgroundLauncherService,
             ICineworldNavigationService navigationService,
             IUserPreferencesService userPreferencesService,
-            IToastService toastService)
+            IToastService toastService,
+            ILauncherService launcherService)
         {
             _filmService = filmService;
             _cinemaService = cinemaService;
@@ -70,6 +72,8 @@ namespace CineworldAlerter.ViewModels
 
             userPreferencesService.UserPreferencesChanged -= UserPreferencesServiceOnUserPreferencesChanged;
             userPreferencesService.UserPreferencesChanged += UserPreferencesServiceOnUserPreferencesChanged;
+
+            Messenger.Default.Register<NotificationMessage>(this, m => launcherService.LaunchUriAsync(m.Notification));
         }
 
         private void UserPreferencesServiceOnUserPreferencesChanged(object sender, EventArgs e)
