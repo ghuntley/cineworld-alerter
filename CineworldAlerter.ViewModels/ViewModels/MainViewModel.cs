@@ -8,6 +8,7 @@ using Cimbalino.Toolkit.Services;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Extensions;
 using CineworldAlerter.Core.Services;
+using CineworldAlerter.Messages;
 using CineworldAlerter.ViewModels.Entities;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -73,7 +74,7 @@ namespace CineworldAlerter.ViewModels
             userPreferencesService.UserPreferencesChanged -= UserPreferencesServiceOnUserPreferencesChanged;
             userPreferencesService.UserPreferencesChanged += UserPreferencesServiceOnUserPreferencesChanged;
 
-            Messenger.Default.Register<NotificationMessage>(this, m => launcherService.LaunchUriAsync(m.Notification));
+            Messenger.Default.Register<LaunchFilmDetailsMessage>(this, m => launcherService.LaunchUriAsync(m.FilmLink));
         }
 
         private void UserPreferencesServiceOnUserPreferencesChanged(object sender, EventArgs e)

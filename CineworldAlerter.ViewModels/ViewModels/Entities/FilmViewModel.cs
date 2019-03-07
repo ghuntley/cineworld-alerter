@@ -52,7 +52,7 @@ namespace CineworldAlerter.ViewModels.Entities
             => Messenger.Default.Send(new FilmChangedMessage(_film));
 
         public void ViewFilmOnWebsite()
-            => Messenger.Default.Send(new NotificationMessage(_film.Url.ToCineworldLink()));
+            => Messenger.Default.Send(new LaunchFilmDetailsMessage(_film.Url.ToCineworldLink()));
 
         private string GetFilmCode()
             => _film.Attributes

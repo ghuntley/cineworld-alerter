@@ -92,7 +92,7 @@ namespace CineworldAlerter.ViewModels
         public FullFilm Film { get; }
 
         public string Day => Date.ToString("ddd");
-        public string DateString => Date.ToString("MM/dd");
+        public string DateString => Date.ToString("dd/MM");
 
         private string CinemaCode { get; }
     
