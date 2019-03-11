@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cimbalino.Toolkit.Services;
 using Cineworld.Api.Model;
 using CineworldAlerter.Core.Services;
+using CineworldAlerter.Core.Services.Local;
 using CineworldAlerter.Core.Tests.Mocks;
 using Moq;
 using Newtonsoft.Json;
@@ -16,8 +16,7 @@ namespace CineworldAlerter.Core.Tests.Services
     {
         private readonly ApiClientMock _apiMock = new ApiClientMock();
         private readonly Mock<ICachingService<string, List<FullFilm>>> _cachingMock = new Mock<ICachingService<string, List<FullFilm>>>();
-        private readonly Mock<IStorageService> _storageMock = new Mock<IStorageService>();
-        private readonly Mock<IStorageServiceHandler> _localStorageMock = new Mock<IStorageServiceHandler>();
+        private readonly Mock<ILocalStorageService> _storageMock = new Mock<ILocalStorageService>();
         private readonly Mock<IToastService> _toastMock = new Mock<IToastService>();
 
         private Func<string, Task<List<FullFilm>>> _retrievalFunc;
@@ -63,15 +62,13 @@ namespace CineworldAlerter.Core.Tests.Services
         [Fact]
         public async Task GetLocalFilms_NoFile_ReturnsNoFilms()
         {
-            _localStorageMock
+            _storageMock
                 .Setup(x => x.FileExistsAsync(It.Is<string>(y => y == FilmService.FilmCacheFile)))
                 .ReturnsAsync(false);
 
             _cachingMock
                 .Setup(x => x.Get(It.Is<string>(y => y == FilmService.FilmCacheFile)))
                 .Returns(() => _retrievalFunc(FilmService.FilmCacheFile));
-
-            SetupLocalStorage();
 
             var target = GetTarget();
 
@@ -98,8 +95,6 @@ namespace CineworldAlerter.Core.Tests.Services
                 .WithGetFilmsForCinema(new []{_jurassicParkLite, _jurassicWorldLite})
                 .WithGetAllFilms(new [] {_jurassicParkFull, _jurassicWorldFull});
 
-            SetupLocalStorage();
-
             var target = GetTarget();
             await target.RefreshFilms("8112");
 
@@ -108,7 +103,7 @@ namespace CineworldAlerter.Core.Tests.Services
                     It.Is<IEnumerable<FullFilm>>(y =>
                         y.First() == _jurassicWorldFull)), Times.Once);
 
-            _localStorageMock
+            _storageMock
                 .Verify(x => x.WriteAllTextAsync(
                     It.Is<string>(y => y == FilmService.FilmCacheFile),
                     JsonConvert.SerializeObject(new List<FullFilm>
@@ -117,7 +112,7 @@ namespace CineworldAlerter.Core.Tests.Services
                         _jurassicWorldFull
                     })), Times.Once);
 
-            _localStorageMock
+            _storageMock
                 .Verify(x => x.WriteAllTextAsync(
                     It.Is<string>(y => y == FilmService.AllFilmCacheFile),
                     JsonConvert.SerializeObject(new List<FullFilm>
@@ -126,11 +121,6 @@ namespace CineworldAlerter.Core.Tests.Services
                         _jurassicWorldFull
                     })), Times.Once);
         }
-
-        private void SetupLocalStorage()
-            => _storageMock
-                .SetupGet(x => x.Local)
-                .Returns(_localStorageMock.Object);
 
         private FilmService GetTarget()
             => new FilmService(

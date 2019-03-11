@@ -1,11 +1,10 @@
-﻿using Cimbalino.Toolkit.Services;
-using Cineworld.Api;
+﻿using Cineworld.Api;
 using Cineworld.Api.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CineworldAlerter.Core.Extensions;
+using CineworldAlerter.Core.Services.Local;
 
 namespace CineworldAlerter.Core.Services
 {
@@ -17,13 +16,13 @@ namespace CineworldAlerter.Core.Services
 
         private readonly IApiClient _apiClient;
         private readonly ICachingService<string, List<FullFilm>> _filmCache;
-        private readonly IStorageService _storageService;
+        private readonly ILocalStorageService _storageService;
         private readonly IToastService _toastService;
 
         public FilmService(
             IApiClient apiClient,
             ICachingService<string, List<FullFilm>> filmCache,
-            IStorageService storageService,
+            ILocalStorageService storageService,
             IToastService toastService)
         {
             _apiClient = apiClient;
@@ -123,10 +122,10 @@ namespace CineworldAlerter.Core.Services
 
         public async Task DeleteLocalFilms()
         {
-            if (!await _storageService.Local.FileExistsAsync(FilmCacheFile))
+            if (!await _storageService.FileExistsAsync(FilmCacheFile))
                 return;
 
-            await _storageService.Local.DeleteFileAsync(FilmCacheFile);
+            await _storageService.DeleteFileAsync(FilmCacheFile);
             _filmCache.ClearCache(FilmCacheFile);
         }
 
@@ -189,10 +188,10 @@ namespace CineworldAlerter.Core.Services
 
         private async Task<List<FullFilm>> LoadFilmsFromFile(string fileName)
         {
-            if (!await _storageService.Local.FileExistsAsync(fileName))
+            if (!await _storageService.FileExistsAsync(fileName))
                 return new List<FullFilm>();
 
-            var json = await _storageService.Local.ReadAllTextAsync(fileName);
+            var json = await _storageService.ReadAllTextAsync(fileName);
             var filmList = JsonConvert.DeserializeObject<List<FullFilm>>(json);
             return filmList?.OrderBy(x => x.Weight).ToList() ?? new List<FullFilm>();
         }
@@ -200,7 +199,7 @@ namespace CineworldAlerter.Core.Services
         private async Task WriteFilmsToFile(string file, IEnumerable<FullFilm> films)
         {
             var json = JsonConvert.SerializeObject(films);
-            await _storageService.Local.WriteAllTextAsync(file, json);
+            await _storageService.WriteAllTextAsync(file, json);
         }
     }
 }

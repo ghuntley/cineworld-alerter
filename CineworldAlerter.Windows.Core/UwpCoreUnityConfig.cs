@@ -1,8 +1,10 @@
 ﻿using Cimbalino.Toolkit.Services;
 using Cineworld.Api;
 using CineworldAlerter.Core.Services;
+using CineworldAlerter.Core.Services.Local;
 using CineworldAlerter.Windows.Core.SampleData;
 using CineworldAlerter.Windows.Core.Services;
+using CineworldAlerter.Windows.Core.Services.Local;
 using Unity;
 
 namespace CineworldAlerter.Windows.Core
@@ -16,6 +18,8 @@ namespace CineworldAlerter.Windows.Core
             container.RegisterType<IStorageService, StorageService>();
             container.RegisterType<IApplicationSettingsService, ApplicationSettingsService>();
             container.RegisterType<IToastProxyService, ToastProxyService>();
+            container.RegisterType<ILocalStorageService, WindowsLocalStorageService>();
+            container.RegisterType<ILocalSettingsService, WindowsLocalSettingsService>();
         }
     }
 }

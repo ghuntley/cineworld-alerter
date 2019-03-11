@@ -107,6 +107,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="SampleData\SampleDataApiClient.cs" />
+    <Compile Include="Services\Local\WindowsLocalSettingsService.cs" />
+    <Compile Include="Services\Local\WindowsLocalStorageService.cs" />
     <Compile Include="Services\ToastProxyService.cs" />
     <Compile Include="UwpCoreUnityConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

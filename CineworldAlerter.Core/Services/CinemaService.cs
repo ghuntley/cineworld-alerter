@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Cimbalino.Toolkit.Services;
 using Cineworld.Api;
 using Cineworld.Api.Model;
+using CineworldAlerter.Core.Services.Local;
 using Newtonsoft.Json;
 
 namespace CineworldAlerter.Core.Services
@@ -12,18 +12,18 @@ namespace CineworldAlerter.Core.Services
         private const string CurrentCinemaKey = "CurrentCinema";
         private const string CinemaCacheFile = "CinemaCache.json";
 
-        private readonly IApplicationSettingsService _applicationSettingsService;
+        private readonly ILocalSettingsService _applicationSettingsService;
         private readonly IApiClient _apiClient;
         private readonly ICachingService<List<Cinema>> _cinemaCache;
-        private readonly IStorageService _storageService;
+        private readonly ILocalStorageService _storageService;
 
         public Cinema CurrentCinema { get; private set; }
 
         public CinemaService(
-            IApplicationSettingsService applicationSettingsService,
+            ILocalSettingsService applicationSettingsService,
             IApiClient apiClient,
             ICachingService<List<Cinema>> cinemaCache,
-            IStorageService storageService)
+            ILocalStorageService storageService)
         {
             _applicationSettingsService = applicationSettingsService;
             _apiClient = apiClient;
@@ -40,13 +40,13 @@ namespace CineworldAlerter.Core.Services
             if (cinema == null)
             {
                 CurrentCinema = null;
-                _applicationSettingsService.Local.Remove(CurrentCinemaKey);
+                _applicationSettingsService.Remove(CurrentCinemaKey);
                 return;
             }
 
             CurrentCinema = cinema;
             var json = JsonConvert.SerializeObject(cinema);
-            _applicationSettingsService.Local.Set(CurrentCinemaKey, json);
+            _applicationSettingsService.Set(CurrentCinemaKey, json);
         }
 
         public Task<List<Cinema>> GetCurrentCinemas() 
@@ -54,29 +54,29 @@ namespace CineworldAlerter.Core.Services
 
         private async Task<List<Cinema>> LoadCinemasFromFileOrApi()
         {
-            if (!await _storageService.Local.FileExistsAsync(CinemaCacheFile))
+            if (!await _storageService.FileExistsAsync(CinemaCacheFile))
             {
                 var cinemas = await _apiClient.GetCinemas();
                 var json = JsonConvert.SerializeObject(cinemas);
-                await _storageService.Local.WriteAllTextAsync(CinemaCacheFile, json);
+                await _storageService.WriteAllTextAsync(CinemaCacheFile, json);
 
                 return cinemas;
             }
 
-            var fileContents = await _storageService.Local.ReadAllTextAsync(CinemaCacheFile);
+            var fileContents = await _storageService.ReadAllTextAsync(CinemaCacheFile);
             var cinemaList = JsonConvert.DeserializeObject<List<Cinema>>(fileContents);
             return cinemaList ?? new List<Cinema>();
         }
 
         private void LoadCinema()
         {
-            if (!_applicationSettingsService.Local.Contains(CurrentCinemaKey))
+            if (!_applicationSettingsService.Contains(CurrentCinemaKey))
                 return;
 
-            var json = _applicationSettingsService.Local.Get<string>(CurrentCinemaKey);
+            var json = _applicationSettingsService.Get<string>(CurrentCinemaKey);
             if (string.IsNullOrEmpty(json))
             {
-                _applicationSettingsService.Local.Remove(CurrentCinemaKey);
+                _applicationSettingsService.Remove(CurrentCinemaKey);
                 return;
             }
 
