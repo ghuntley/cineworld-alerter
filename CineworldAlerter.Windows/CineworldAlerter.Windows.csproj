@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ThreeDBookingBackgroundConverter.cs" />
     <Compile Include="Services\BackgroundLauncherService.cs" />
     <Compile Include="Services\BaseBackgroundService.cs" />
     <Compile Include="Services\RefreshBackgroundService.cs" />

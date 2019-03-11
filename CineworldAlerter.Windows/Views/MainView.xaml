@@ -6,6 +6,7 @@
     xmlns:converters="using:Cimbalino.Toolkit.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:entities="using:CineworldAlerter.ViewModels.Entities"
+    xmlns:localConverters="using:CineworldAlerter.Converters"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:CineworldAlerter.ViewModels"
     xmlns:views="using:CineworldAlerter.Views"
@@ -16,6 +17,7 @@
 
     <Page.Resources>
         <converters:NegativeBooleanConverter x:Key="NegativeBooleanConverter" />
+        <localConverters:ThreeDBookingBackgroundConverter x:Key="ThreeDBookingBackgroundConverter" />
     </Page.Resources>
 
     <Grid>
@@ -184,7 +186,7 @@
 
                         <HyperlinkButton
                             Margin="12,0"
-                            Click="{x:Bind BookingsViewModel.SelectedFilm.ViewFilmOnWebsite}"
+                            Click="{x:Bind BookingsViewModel.SelectedFilm.ViewFilmOnWebsite, Mode=OneWay}"
                             Content="Film details"
                             RelativePanel.Below="FilmDetailReleaseDate"
                             RelativePanel.RightOf="FilmDetailPoster" />
@@ -224,7 +226,7 @@
                                                 <Grid>
                                                     <Button
                                                         Margin="12,6"
-                                                        Background="#D92931"
+                                                        Background="{x:Bind Is3D, Mode=OneWay, Converter={StaticResource ThreeDBookingBackgroundConverter}}"
                                                         Click="{x:Bind LaunchBooking}"
                                                         Content="{x:Bind BookingTime, Mode=OneWay}"
                                                         Foreground="White"

@@ -15,6 +15,8 @@ namespace CineworldAlerter.ViewModels.Entities
 
         public bool IsSoldOut => _booking.IsSoldOut;
 
+        public bool Is3D => _booking.AttributeIds.Contains("3D") || _booking.AttributeIds.Contains("3d");
+
         public bool IsSubtitled => _booking.AttributeIds?.Contains("subbed") ?? false;
 
         public BookingViewModel(
