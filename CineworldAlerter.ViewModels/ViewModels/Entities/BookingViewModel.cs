@@ -24,7 +24,7 @@ namespace CineworldAlerter.ViewModels.Entities
             => _launcherService = launcherService;
 
         public void LaunchBooking()
-            => _launcherService.LaunchUriAsync(_booking.BookingLink.ToCineworldLink());
+            => _launcherService.LaunchUriAsync(_booking.BookingLink);
 
         public BookingViewModel WithBooking(Booking booking)
         {
