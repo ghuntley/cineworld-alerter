@@ -7,6 +7,11 @@ namespace CineworldAlerter.Core.Extensions
         private const string CineworldBase = "https://www.cineworld.co.uk";
 
         public static string ToCineworldLink(this string link)
-            => $"{CineworldBase}{link}";
+        {
+            if (!link.StartsWith(CineworldBase))
+                return $"{CineworldBase}{link}";
+
+            return link;
+        }
     }
 }
