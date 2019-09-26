@@ -29,7 +29,7 @@ namespace CineworldAlerter.Core.Services
                     if (!CanFilmBeDisplayedInternal(true, film))
                         continue;
 
-                    await _toastProxyService.ShowToast(film, film.IsUnlimitedScreening());
+                    //await _toastProxyService.ShowToast(film, film.IsUnlimitedScreening());
                 }
             });
 
@@ -38,7 +38,7 @@ namespace CineworldAlerter.Core.Services
             {
                 foreach (var film in films)
                 {
-                    await _toastProxyService.AnnounceUnlimitedScreening(film);
+                    //await _toastProxyService.AnnounceUnlimitedScreening(film);
                 }
             });
 
